@@ -1,0 +1,9 @@
+ios/
+android/
+.expo/
+dist/
+coverage/
+.claude/
+pnpm-lock.yaml
+*.md
+assets/
