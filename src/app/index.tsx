@@ -2,10 +2,10 @@ import { Link, router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { TopicCard } from '@/features/lessons';
-import { AppText } from '@/ui/app-text';
 import { Heading } from '@/ui/heading';
 import { Screen } from '@/ui/screen';
-import { sizes, spacing, typeScale } from '@/ui/theme';
+import { TextLink } from '@/ui/text-link';
+import { spacing } from '@/ui/theme';
 
 export default function HomeScreen() {
   return (
@@ -24,9 +24,7 @@ export default function HomeScreen() {
         />
         {/* Temporary: feature 6 removes this link with the showcase. */}
         <Link href="/showcase" asChild>
-          <AppText role="link" tone="accentText" style={styles.link}>
-            Zobacz wzornik
-          </AppText>
+          <TextLink>Zobacz wzornik</TextLink>
         </Link>
       </View>
     </Screen>
@@ -35,11 +33,4 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   page: { gap: spacing.xl, paddingTop: spacing.lg },
-  // A Text cannot centre itself, so padding lifts one body line to the touch size.
-  link: {
-    alignSelf: 'flex-start',
-    minHeight: sizes.minTouch,
-    paddingVertical: (sizes.minTouch - typeScale.body.lineHeight) / 2,
-    textDecorationLine: 'underline',
-  },
 });

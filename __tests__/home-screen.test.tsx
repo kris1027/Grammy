@@ -52,8 +52,7 @@ test('the sample book link is tall enough to press (spec 0004, covers: AC-10)', 
 test('links to the sample book (covers: AC-8)', async () => {
   await render(<HomeScreen />);
 
-  const link = screen.getByRole('link', { name: 'Zobacz wzornik' });
-  expect(link).toHaveStyle({
+  expect(screen.getByText('Zobacz wzornik')).toHaveStyle({
     color: themes.light.colors.accentText,
     textDecorationLine: 'underline',
   });

@@ -13,6 +13,7 @@ import { Chip } from '@/ui/chip';
 import { Heading } from '@/ui/heading';
 import { Screen } from '@/ui/screen';
 import { SketchCard } from '@/ui/sketch-card';
+import { TextLink } from '@/ui/text-link';
 import { createThemedStyles, useThemedStyles } from '@/ui/themed-styles';
 
 import type { TopicId } from '../content/catalog';
@@ -30,20 +31,13 @@ export const SEE_ALSO = 'Zobacz też';
 
 const UNDER_HEADER = ['left', 'right', 'bottom'] as const;
 
-const themed = createThemedStyles(({ spacing, sizes, typeScale }) =>
+const themed = createThemedStyles(({ spacing }) =>
   StyleSheet.create({
     page: { gap: spacing.xl, paddingTop: spacing.lg },
     top: { gap: spacing.sm },
     chip: { alignSelf: 'flex-start' },
     sections: { gap: spacing.xxl },
     cards: { gap: spacing.md },
-    // A Text cannot centre itself, so padding lifts one body line to the touch size.
-    homeLink: {
-      alignSelf: 'flex-start',
-      minHeight: sizes.minTouch,
-      paddingVertical: (sizes.minTouch - typeScale.body.lineHeight) / 2,
-      textDecorationLine: 'underline',
-    },
   }),
 );
 
@@ -160,9 +154,7 @@ function NotFound() {
       <View style={styles.page}>
         <Heading level={1}>{NOT_FOUND_TITLE}</Heading>
         <Link href="/" dismissTo asChild>
-          <AppText role="link" tone="accentText" style={styles.homeLink}>
-            {BACK_HOME}
-          </AppText>
+          <TextLink>{BACK_HOME}</TextLink>
         </Link>
       </View>
     </Screen>
