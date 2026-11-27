@@ -1,0 +1,9 @@
+{
+  "tool": "jest",
+  "gate": null,
+  "additionalTools": ["jest-expo", "@testing-library/react-native"],
+  "e2eTool": "none",
+  "testDir": "__tests__",
+  "filePattern": "*.test.{ts,tsx}",
+  "packageManager": "pnpm"
+}

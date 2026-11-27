@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "skills": {
+    "expo-native-ui": {
+      "source": "expo/skills",
+      "commit": "335359577cbb61cf4097c14ac88ee2609726c85f",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-native-ui/SKILL.md",
+      "computedHash": "6f2514b968534810bbabec5003d7ff9caa8553385e19fe6d6a7685ab5882e744"
+    },
+    "expo-router": {
+      "source": "expo/skills",
+      "commit": "335359577cbb61cf4097c14ac88ee2609726c85f",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-router/SKILL.md",
+      "computedHash": "ee023d92fdf52f8ddf50c267b72e453e592249110e9ad262ed186248bc296199"
+    },
+    "expo-upgrade": {
+      "source": "expo/skills",
+      "commit": "335359577cbb61cf4097c14ac88ee2609726c85f",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-upgrade/SKILL.md",
+      "computedHash": "6171f850397fb0fa1358a34dc110b09679ae186bc39adf240e0a2c8a23486e2a"
+    },
+    "pnpm": {
+      "source": "antfu/skills",
+      "commit": "0ecc25a6dcc805074133f7315fb6965450c70990",
+      "sourceType": "github",
+      "skillPath": "skills/pnpm/SKILL.md",
+      "computedHash": "fb4c2b0f98b1e651fb217f2070e3782f2fa58fd7d9fb2745e9fefaf945b8c60e"
+    },
+    "react-native-best-practices": {
+      "source": "callstackincubator/agent-skills",
+      "commit": "59e9d17446a248b21d86f078fcd0bd2d36db1ca4",
+      "sourceType": "github",
+      "skillPath": "skills/react-native-best-practices/SKILL.md",
+      "computedHash": "03a527a04426ca72763396170997a51d6d07600100a549f09915a6b4e8dc10c1"
+    },
+    "react-native-testing": {
+      "source": "callstack/react-native-testing-library",
+      "commit": "5a05c26926077b507b9dcca235063432a23068e1",
+      "sourceType": "github",
+      "skillPath": "skills/react-native-testing/SKILL.md",
+      "computedHash": "9bed4271c080eb6ff6745db5a634b28552571f197d6b5efe58a734e75fe162f0"
+    }
+  }
+}

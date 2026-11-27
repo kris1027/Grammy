@@ -1,41 +1,75 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+# Grammy
 
-## Expo has changed — do not trust your training data
+A personal, offline iPhone app (in Polish) for learning English grammar. One learner, no server, no accounts.
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+## Stack
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+- **Language / Runtime**: TypeScript (`strict`, `noUncheckedIndexedAccess`), Node 24.3+ (24 line)
+- **Framework**: Expo SDK 58, React Native 0.88, React 19, Expo Router (typed routes), React Compiler on
+- **Key dependencies**: `expo-router`, `react-native-safe-area-context`, `expo-sqlite/kv-store` (progress, when feature 8 lands), `jest-expo` + React Native Testing Library
+- **Package manager**: pnpm 12 with `nodeLinker: hoisted` (keep it, and keep the delay on brand new releases)
+- **Platform**: iPhone only, portrait, light and dark (`userInterfaceStyle: automatic`). `ios/` is generated (never edit by hand, never commit)
+- Full decision: [docs/specs/0001-expo-offline-iphone-stack/index.md](docs/specs/0001-expo-offline-iphone-stack/index.md)
+
+## Build approach
+
+**Tracer Bullet**: build one small piece fully working end to end, then add the next.
 
 ## Commands
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
-
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+pnpm install                                         # install
+pnpm start                                           # dev server (press i for the simulator)
+pnpm ios                                             # debug build in the simulator
+pnpm expo run:ios --device --configuration Release   # install on the iPhone (free Personal Team)
+pnpm test                                            # Jest
+pnpm typecheck                                       # tsc --noEmit
+pnpm expo install <name>                             # add a library at the SDK matched version
 ```
 
-Run lint and typecheck before declaring any task done.
+## Specs
 
-## Navigation & Routing
-
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
-
-## Building with EAS
-
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+Stored in `docs/specs/`, one folder each: `docs/specs/NNNN-title/index.md`. Scope lives in `docs/scope/scope.md`.
 
 ## Rules
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- **Functional style**: pure functions and plain, immutable data (`const`, `readonly`, `as const`). No classes where a function works, no shared mutable state, side effects only at the edges.
+- **Folders by feature**: `src/app` holds thin route files only; `src/features/<name>` holds data, logic and views; `src/ui` holds shared parts (theme, cards, tables). Imports flow `app → features → ui`, never back.
+- **File names** use `kebab-case` (`lesson-table.tsx`). **Named exports only**, except the default export Expo Router needs in `src/app`.
+- **Storage has one door**: only `src/features/progress` imports `expo-sqlite/kv-store`. Expected failures return a typed result or a safe empty default; a missing or unreadable saved value never crashes the app.
+- **Offline and free account safe**: no network requests; fonts, icons and lessons are bundled. No push, iCloud, Sign in with Apple, Apple Pay, NFC or in app purchases. No env vars or secrets.
+- **Styling**: `StyleSheet.create` plus theme values from `src/ui/theme.ts` (overrides the inline style default in `expo-native-ui`).
+- **Accessibility baseline**: WCAG AA contrast in light and dark, `role`/labels on interactive and heading elements, text that scales with Dynamic Type, Polish letters render correctly. All app text is Polish.
+- **Testing gate**: every feature ships Jest unit and screen tests in `__tests__/` (`*.test.ts(x)`), plus `/check verify` on the real app. Prefs in `test-preferences.json`.
+- **Commits** follow Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `test:`).
+- **Expo tooling**: use the simulator and local release builds, not Expo Go or EAS cloud builds. Ask before running `@expo/agent-cli@latest`.
+
+## Tooling
+
+Chosen here, installed by `/develop tooling`:
+- Lint and format: ESLint via `expo lint` (`eslint-config-expo`, flat config) plus Prettier.
+- Before commit: a git hook runs lint and format on staged files, plus `pnpm typecheck`.
+- CI: a GitHub Actions workflow runs lint, typecheck and tests on push and pull requests.
+
+## Git
+
+- integration: on
+- branch prefix: feat/
+- commit: per-milestone
+
+## Agent skills
+
+- [expo-router](.claude/skills/expo-router/): `expo/skills`, routes, stacks, headers, modals
+- [expo-native-ui](.claude/skills/expo-native-ui/): `expo/skills`, native feeling screens, controls, SF Symbols (spec overrides apply)
+- [expo-upgrade](.claude/skills/expo-upgrade/): `expo/skills`, SDK upgrades, dependency fixes, React Compiler
+- [react-native-testing](.claude/skills/react-native-testing/): `callstack/react-native-testing-library`, RNTL v14 queries and async render
+- [react-native-best-practices](.claude/skills/react-native-best-practices/): `callstackincubator/agent-skills`, performance, lists, bundle size
+- [pnpm](.claude/skills/pnpm/): `antfu/skills`, pnpm config, workspace file, install scripts
+
+MCP servers: Expo MCP (chosen, connection pending; confirm the address on Expo's docs)
+
+## Context files
+
+<!-- Nested AGENTS.md files are listed here as they are created -->
+
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

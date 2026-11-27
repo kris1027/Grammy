@@ -1,0 +1,6 @@
+nodeLinker: hoisted
+# Keep pnpm's wait on brand new releases: fail instead of adding exceptions.
+minimumReleaseAgeStrict: true
+allowBuilds:
+  # Ships a ready made Mac binary, so its install script is not needed.
+  '@parcel/watcher': false
