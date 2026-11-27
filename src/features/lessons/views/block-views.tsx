@@ -79,7 +79,7 @@ export function ExamplesBlock({
         <View key={index} style={styles.item}>
           <BulletDot />
           <View style={styles.itemText}>
-            <InlineText text={item.en} variant="strong" onOpenTopic={onOpenTopic} />
+            <InlineText text={item.en} variant="strong" language="en" onOpenTopic={onOpenTopic} />
             <InlineText text={item.pl} variant="muted" onOpenTopic={onOpenTopic} />
             {item.note !== undefined && (
               <InlineText text={item.note} variant="caption" italic onOpenTopic={onOpenTopic} />
@@ -137,6 +137,10 @@ export function FormulaBlock({
   );
 }
 
+/**
+ * Each row is two screen reader elements: the Polish label (`Błędnie` or `Poprawnie`), then
+ * the English sentence in an English voice. The icons are hidden (spec 0004, AC-9).
+ */
 export function MistakeBlock({
   block,
   onOpenTopic,
@@ -145,30 +149,22 @@ export function MistakeBlock({
 
   return (
     <SketchCard>
-      <View
-        style={styles.item}
-        accessible
-        accessibilityLabel={`Błędnie: ${plainText(block.wrong)}`}
-      >
+      <View style={styles.item}>
         <Icon name="xmark.circle.fill" color="error" />
         <View style={styles.itemText}>
           <AppText variant="caption" tone="error">
             Błędnie
           </AppText>
-          <InlineText text={block.wrong} variant="muted" style={styles.struck} />
+          <InlineText text={block.wrong} variant="muted" language="en" style={styles.struck} />
         </View>
       </View>
-      <View
-        style={styles.item}
-        accessible
-        accessibilityLabel={`Poprawnie: ${plainText(block.right)}`}
-      >
+      <View style={styles.item}>
         <Icon name="checkmark.circle.fill" color="success" />
         <View style={styles.itemText}>
           <AppText variant="caption" tone="success">
             Poprawnie
           </AppText>
-          <InlineText text={block.right} variant="strong" />
+          <InlineText text={block.right} variant="strong" language="en" />
         </View>
       </View>
       {block.note !== undefined && <InlineText text={block.note} onOpenTopic={onOpenTopic} />}

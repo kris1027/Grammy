@@ -35,3 +35,5 @@ export type { BlockViewProps, SectionViewProps } from './views/block-view';
 export { InlineText } from './views/inline-text';
 export type { InlineTextProps } from './views/inline-text';
 export { plainText } from './views/plain-text';
+export { TopicCard } from './views/topic-card';
+export type { TopicCardProps } from './views/topic-card';
