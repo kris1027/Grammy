@@ -1,9 +1,12 @@
 import { useTheme } from 'expo-router';
 import { renderRouter, screen } from 'expo-router/testing-library';
+import { fireEvent } from '@testing-library/react-native';
 import { Text, useColorScheme } from 'react-native';
 
 import RootLayout from '@/app/_layout';
 import HomeScreen from '@/app/index';
+import ShowcaseRoute from '@/app/showcase';
+import { themes } from '@/ui/theme';
 
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
   __esModule: true,
@@ -27,14 +30,14 @@ afterEach(() => {
 });
 
 test('opens on the home screen', async () => {
-  await renderRouter({ _layout: RootLayout, index: HomeScreen });
+  await renderRouter({ _layout: RootLayout, index: HomeScreen, showcase: ShowcaseRoute });
 
   expect(screen).toHavePathname('/');
   expect(screen.getByRole('heading', { name: 'Gramatyka angielska' })).toBeOnTheScreen();
 });
 
-test('hides the navigation header above the screen', async () => {
-  await renderRouter({ _layout: RootLayout, index: HomeScreen });
+test('hides the navigation header above the home screen', async () => {
+  await renderRouter({ _layout: RootLayout, index: HomeScreen, showcase: ShowcaseRoute });
 
   // The iPhone draws the header itself, so there is no header text to query.
   // This reads the setting handed to the native view (a react-native-screens
@@ -53,8 +56,29 @@ test.each([
   async (mode, expected) => {
     mockColorScheme.mockReturnValue(mode);
 
-    await renderRouter({ _layout: RootLayout, index: ThemeProbe });
+    await renderRouter({ _layout: RootLayout, index: ThemeProbe, showcase: ShowcaseRoute });
 
     expect(screen.getByText(expected)).toBeOnTheScreen();
   },
 );
+
+test('the home link opens the sample book under a themed header (covers: AC-8)', async () => {
+  await renderRouter({ _layout: RootLayout, index: HomeScreen, showcase: ShowcaseRoute });
+
+  await fireEvent.press(screen.getByRole('link', { name: 'Zobacz wzornik' }));
+
+  expect(screen).toHavePathname('/showcase');
+  expect(screen.getByRole('heading', { name: 'Kolory' })).toBeOnTheScreen();
+
+  const header = screen.container
+    .queryAll((node) => node.type === 'RNSScreenStackHeaderConfig')
+    .find((node) => node.props.hidden !== true);
+  expect(header?.props).toMatchObject({
+    title: 'Wzornik',
+    backTitle: 'Wstecz',
+    backgroundColor: themes.light.colors.paper,
+    color: themes.light.colors.accentText,
+    titleColor: themes.light.colors.ink,
+    titleFontFamily: 'PatrickHand-Regular',
+  });
+});
