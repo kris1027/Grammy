@@ -49,7 +49,7 @@ Text colours (`TEXT_COLOR_KEYS`): `ink`, `inkMuted`, `accentText`, `onAccent`, `
 
 ### Sizes
 
-`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`.
+`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`, `minTouch 44` (minimum height of anything you can press; a text link reaches it with vertical padding, since a `Text` cannot centre itself).
 
 Table columns are sized by their longest word, not a flat minimum. `columnMinWidths` in `sketch-table.tsx` estimates each word from letter width classes (narrow `0.3`, regular `0.56`, capitals `0.7`, round capitals `0.78`, `m w` `0.86`, `M W` `0.98` em, calibrated against SF Pro semibold and rounded up), adds cell padding and the divider, and never goes below `minColumn × fontScale`. The estimate leans wide on purpose: when unsure, a table scrolls instead of breaking a word. Pass `plain` when the cells are not plain strings.
 
@@ -75,8 +75,8 @@ One file each, named exports.
 
 | Part | What it is |
 |---|---|
-| `Screen` | Safe area root on `paper`, `lg` side padding, `xl` bottom padding, scrolls by default. Under a native header pass `edges={['left', 'right', 'bottom']}` |
-| `Heading` | Patrick Hand, levels 1 to 3, `role="heading"`, capped at 1.5 times |
+| `Screen` | Safe area root on `paper`, `lg` side padding, `xl` bottom padding, scrolls by default. Under a native header pass `edges={['left', 'right', 'bottom']}`. `onScroll` and `scrollEventThrottle` (default 16) go straight to the `ScrollView` |
+| `Heading` | Patrick Hand, levels 1 to 3, `role="heading"`, capped at 1.5 times. Optional `tone` (a text colour key) and `accessibilityLabel` |
 | `AppText` | System font text. Variants `body`, `muted`, `caption`, `strong`, `callout`; `italic`; `tone` picks one of the text colour keys |
 | `SketchCard` | `surface` fill, 2 pt outline, radius `md`, offset shadow. Variant `accent` fills `accentSoft` and only holds `ink`, `inkMuted` or `accentText` text |
 | `SpeechBubble` | Outlined bubble with an orange stripe on the left edge and a small rotated square tail; optional leading icon in `accentText`; `accessibilityText` makes it one screen reader element |
@@ -89,7 +89,7 @@ The speech bubble stripe has rounded left corners instead of the body clipping i
 
 ## Lesson views (`src/features/lessons/views`)
 
-Exported from the lessons door: `BlockView`, `SectionView`, `InlineText`, `plainText`.
+Exported from the lessons door: `BlockView`, `SectionView`, `InlineText`, `plainText`, `TopicCard`.
 
 | Block | Look |
 |---|---|
@@ -98,8 +98,16 @@ Exported from the lessons door: `BlockView`, `SectionView`, `InlineText`, `plain
 | `examples` | Orange dot, English in `strong`, Polish below in `muted`, note in italic `caption` |
 | `tip` | `SpeechBubble` with `lightbulb.fill` labelled `Wskazówka`; the text is not grouped, so VoiceOver reaches each topic link in it |
 | `formula` | Optional label in `caption`, parts as `Chip`s joined by an orange `+`, wrapping; read as `Wzór, <label>: a plus b` |
-| `mistake` | Card with `xmark.circle.fill` and `Błędnie` over the struck through wrong line, `checkmark.circle.fill` and `Poprawnie` over the right line, note below; read as `Błędnie: …` and `Poprawnie: …` |
+| `mistake` | Card with `xmark.circle.fill` and `Błędnie` over the struck through wrong line, `checkmark.circle.fill` and `Poprawnie` over the right line, note below. Each row is two VoiceOver elements: the Polish label, then the English sentence in an English voice; the icons are hidden (spec 0004) |
 | `list` | Orange dot bullet plus `InlineText` |
+
+English voice: `InlineText` takes `language="en"`, which sets `accessibilityLanguage="en-US"` on the whole paragraph (links inside included). Only `Example.en`, `Mistake.wrong` and `Mistake.right` use it; tables and formulas stay Polish.
+
+Numbered section: `SectionView` with `number` puts a `NumberBadge` (hidden from VoiceOver) before the level 2 heading in a row (`md` gap, the title wraps), and the heading reads as `<number>. <title>`. Numbers come from the section's position.
+
+`TopicCard`: a `Pressable` around a `SketchCard` (`accent` or `plain`), with a Heading level 3 title, the subtitle in `muted`, an optional `summary` in `body`, and a `chevron.right` in `accentText`. An unwritten topic shows its title and chevron in `inkMuted` and a `caption` line `Lekcja jeszcze niegotowa`. One element, `role="link"`, labelled `<title>, <subtitle>` (plus `, lekcja jeszcze niegotowa`). Pressed lowers opacity to 0.6. An id not in the catalog renders nothing.
+
+Lesson page (`/lesson/[id]`, spec 0004): Heading level 1, subtitle in `muted` and the `Wersja robocza` chip while draft (`sm` apart, the chip hugs its text), the summary in an `accent` card, the numbered sections (`xxl` apart), then `Zobacz też` with plain `TopicCard`s (`md` apart). Page blocks are `xl` apart. The header title stays empty until the top heading scrolls under the header. A not written topic shows the top, the summary and `Ta lekcja jeszcze nie powstała.` in `muted`; an unknown id shows `Nie znaleziono lekcji` and a `Wróć do strony głównej` link.
 
 Inline markup: `**bold**` is semibold, `==highlight==` keeps the text colour on `accentSoft`, `[[topic]]` links are underlined `accentText` (or `inkMuted` when the lesson is not written yet), have `role="link"` and call `onOpenTopic(id)` when given. Every accessibility label built from lesson text goes through `plainText()`.
 
