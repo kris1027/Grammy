@@ -75,13 +75,13 @@ Define the shape every lesson follows (headings, explanations in Polish, tables,
 ### 4. Design system and UI foundation · in-progress
 Turn your sketch picture into a clean, reusable look: colours, fonts, icons, cards, tables and speech bubbles, in light and dark.
 **Done when:** `design.md` and the base components cover light and dark mode, Polish letters display correctly, text and tables are easy to read on an iPhone, and the style does not copy artwork from the sample picture.
-**Spec:** [0003](../specs/0003-design-system-ui-foundation/index.md)
+**Spec:** [0003](../specs/0003-design-system-ui-foundation/index.md) · code in `src/ui`, `src/features/lessons/views`, `src/features/showcase` · note: `sizes.minColumn` is 80, not 96, owed to `/architect`
 - [x] Design it (spec): `/architect design system and UI foundation`
-- [ ] Build it: `/develop design system and UI foundation`
-  - [ ] Font, tokens, contrast checks and a thin showcase thread on the iPhone (AC-1, AC-2, AC-3, AC-11)
-  - [ ] Shared parts in `src/ui` (AC-4, AC-5)
-  - [ ] Views for the 7 lesson block types and the full showcase (AC-6, AC-7, AC-8)
-  - [ ] App icon, splash and `docs/design.md` (AC-9, AC-10)
+- [x] Build it: `/develop design system and UI foundation`
+  - [x] Font, tokens, contrast checks and a thin showcase thread on the iPhone (AC-1, AC-2, AC-3, AC-11)
+  - [x] Shared parts in `src/ui` (AC-4, AC-5)
+  - [x] Views for the 7 lesson block types and the full showcase (AC-6, AC-7, AC-8)
+  - [x] App icon, splash and `docs/design.md` (AC-9, AC-10)
 - [ ] Verify it: `/check verify design system and UI foundation`
 
 ## Skeleton
