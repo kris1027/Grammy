@@ -49,7 +49,7 @@ Text colours (`TEXT_COLOR_KEYS`): `ink`, `inkMuted`, `accentText`, `onAccent`, `
 
 ### Sizes
 
-`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`, `minTouch 44` (minimum height of anything you can press; a text link reaches it with vertical padding, since a `Text` cannot centre itself).
+`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`, `minTouch 44` (minimum height of anything you can press; a standalone text link gets it from `TextLink`).
 
 Table columns are sized by their longest word, not a flat minimum. `columnMinWidths` in `sketch-table.tsx` estimates each word from letter width classes (narrow `0.3`, regular `0.56`, capitals `0.7`, round capitals `0.78`, `m w` `0.86`, `M W` `0.98` em, calibrated against SF Pro semibold and rounded up), adds cell padding and the divider, and never goes below `minColumn × fontScale`. The estimate leans wide on purpose: when unsure, a table scrolls instead of breaking a word. Pass `plain` when the cells are not plain strings.
 
@@ -84,6 +84,7 @@ One file each, named exports.
 | `Chip` | Outlined pill on `surface`, `callout` text. Corners use `radius.lg`, not `pill`, so a chip that wraps at large text sizes keeps its text inside the outline |
 | `SketchTable` | Outlined table, header row on `accentSoft`, thin inner lines. Columns are at least as wide as their longest word (see Sizes). When those minimums are wider than the space, it scrolls sideways and shows `Przesuń w bok, aby zobaczyć więcej →` |
 | `Icon` | An SF Symbol (`expo-symbols`), tinted from the theme, decorative unless given a Polish `label` |
+| `TextLink` | A standalone underlined `accentText` link, at least `minTouch` tall; pressed lowers opacity to 0.6. The `role="link"` sits on a `Pressable`, because iOS reads a lone `Text` with that role as static text. Wrap it in `<Link asChild>` to navigate. Links inside a paragraph stay nested `Text` (see Inline markup) |
 
 The speech bubble stripe has rounded left corners instead of the body clipping it, because clipping would also cut the offset shadow.
 
