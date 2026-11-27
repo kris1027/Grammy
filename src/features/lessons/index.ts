@@ -1,10 +1,6 @@
 // The only door into lessons for other features. Content files and model internals
 // (validateContent, findMarkupProblems, createQueries) stay private.
 
-import { categories, topics } from './content/catalog';
-import { lessonsById } from './content/lessons';
-import { createQueries } from './model/catalog-queries';
-
 export type {
   Block,
   Category,
@@ -24,5 +20,18 @@ export type { TopicId } from './content/catalog';
 export { TENSE_ASPECTS, TENSE_TIMES } from './model/types';
 export { parseInline } from './model/markup';
 
-export const { listCategories, listTopics, getTopic, getLesson, getTenseGrid, listDraftLessons } =
-  createQueries(categories, topics, lessonsById);
+export {
+  listCategories,
+  listTopics,
+  getTopic,
+  getLesson,
+  getTenseGrid,
+  listDraftLessons,
+} from './views/queries';
+
+// Views that render lesson content with the shared parts from src/ui (spec 0003).
+export { BlockView, SectionView } from './views/block-view';
+export type { BlockViewProps, SectionViewProps } from './views/block-view';
+export { InlineText } from './views/inline-text';
+export type { InlineTextProps } from './views/inline-text';
+export { plainText } from './views/plain-text';

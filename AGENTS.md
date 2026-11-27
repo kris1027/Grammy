@@ -52,6 +52,7 @@ Chosen here, installed by `/develop tooling`:
 - Lint and format: ESLint 9 via `expo lint` (`eslint-config-expo`, flat config in `eslint.config.js`) plus Prettier (`.prettierrc.json`; Markdown is skipped). ESLint enforces named exports outside `src/app`. Stay on ESLint 9 until the import and react plugins support 10.
 - Before commit: `simple-git-hooks` plus `lint-staged` lint and format staged files, then run `pnpm typecheck`. `pnpm install` sets up the hook through `prepare`; if the hook goes missing, run `pnpm prepare`.
 - CI: `.github/workflows/ci.yml` runs lint, format check, typecheck and tests on pull requests and pushes to `main`.
+- Jest: `jest.setup.ts` mocks `expo-symbols` as a plain `View` (testID `icon`, keeps `name` and `tintColor`), so tests can check which icon shows.
 
 ## Git
 
@@ -70,8 +71,11 @@ Chosen here, installed by `/develop tooling`:
 
 MCP servers: Expo MCP (chosen, connection pending; confirm the address on Expo's docs)
 
+Declined: `expo-font`, `expo-symbols` Agent Skills (covered by `expo-native-ui`)
+
 ## Context files
 
+- Design system: build all UI to [docs/design.md](docs/design.md) (paper and chalkboard look, shared parts, rules); token values live in `src/ui/theme.ts`.
 <!-- Nested AGENTS.md files are listed here as they are created -->
 - [src/features/lessons/AGENTS.md](src/features/lessons/AGENTS.md): lesson content model, catalog, how to add a lesson or topic
 

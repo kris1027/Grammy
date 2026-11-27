@@ -15,8 +15,8 @@ const mockColorScheme = jest.mocked(useColorScheme);
 const title = () => screen.getByRole('heading', { name: 'Gramatyka angielska' });
 
 function expectColors(mode: keyof typeof themes) {
-  expect(screen.root).toHaveStyle({ backgroundColor: themes[mode].background });
-  expect(title()).toHaveStyle({ color: themes[mode].text });
+  expect(screen.root).toHaveStyle({ backgroundColor: themes[mode].colors.paper });
+  expect(title()).toHaveStyle({ color: themes[mode].colors.ink });
 }
 
 beforeEach(() => {
@@ -29,8 +29,18 @@ test('shows the Polish title', async () => {
   expect(title()).toBeOnTheScreen();
 });
 
+test('links to the sample book (covers: AC-8)', async () => {
+  await render(<HomeScreen />);
+
+  const link = screen.getByRole('link', { name: 'Zobacz wzornik' });
+  expect(link).toHaveStyle({
+    color: themes.light.colors.accentText,
+    textDecorationLine: 'underline',
+  });
+});
+
 test.each(['light', 'dark'] as const)(
-  'uses the %s colours when the iPhone is in that mode (covers: AC-3)',
+  'uses the %s colours when the iPhone is in that mode (covers: AC-1)',
   async (mode) => {
     mockColorScheme.mockReturnValue(mode);
 
@@ -48,7 +58,7 @@ test('falls back to light colours when the iPhone reports no preference', async 
   expectColors('light');
 });
 
-test('changes colours when the appearance changes while the screen is open (covers: AC-3)', async () => {
+test('changes colours when the appearance changes while the screen is open', async () => {
   await render(<HomeScreen />);
   expectColors('light');
 

@@ -1,30 +1,28 @@
-import { StyleSheet, Text, useColorScheme } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
-import { themes } from '@/ui/theme';
+import { AppText } from '@/ui/app-text';
+import { Heading } from '@/ui/heading';
+import { Screen } from '@/ui/screen';
+import { spacing } from '@/ui/theme';
 
 export default function HomeScreen() {
-  const colors = themes[useColorScheme() === 'dark' ? 'dark' : 'light'];
-
   return (
-    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]}>
-      <Text role="heading" style={[styles.title, { color: colors.text }]}>
-        Gramatyka angielska
-      </Text>
-    </SafeAreaView>
+    <Screen scroll={false}>
+      <View style={styles.center}>
+        <Heading level={1}>Gramatyka angielska</Heading>
+        {/* Temporary: feature 6 removes this link with the showcase. */}
+        <Link href="/showcase" asChild>
+          <AppText role="link" tone="accentText" style={styles.link}>
+            Zobacz wzornik
+          </AppText>
+        </Link>
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.lg },
+  link: { textDecorationLine: 'underline' },
 });
