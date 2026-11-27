@@ -62,13 +62,14 @@ Write down the project rules and set up automatic code checks, based on the real
 Define the shape every lesson follows (headings, explanations in Polish, tables, examples, tips) and how lessons are grouped. It matters because all content depends on it.
 **Done when:** a tense lesson and a different kind of grammar topic both fit the same shape, and adding a lesson needs no screen changes. All content ships inside the app.
 **Spec:** [0002](../specs/0002-lesson-content-model.md)
+**Code:** code in `src/features/lessons/` (tests in `__tests__/lessons/`)
 - [x] Design it (spec): `/architect lesson content model`
-- [ ] Build it: `/develop lesson content model`
-  - [ ] Types, lookups and a thin Present Simple thread, with odd input tests (AC-3)
-  - [ ] Inline markup parser and checker (AC-4)
-  - [ ] Full catalog of 12 tenses plus articles, and the tense grid (AC-2)
-  - [ ] Content validator and the two short sample lessons (AC-1, AC-5)
-  - [ ] Draft list and extensibility test (AC-6, AC-7)
+- [x] Build it: `/develop lesson content model`
+  - [x] Types, lookups and a thin Present Simple thread, with odd input tests (AC-3)
+  - [x] Inline markup parser and checker (AC-4)
+  - [x] Full catalog of 12 tenses plus articles, and the tense grid (AC-2)
+  - [x] Content validator and the two short sample lessons (AC-1, AC-5)
+  - [x] Draft list and extensibility test (AC-6, AC-7)
 - [ ] Verify it: `/check verify lesson content model`
 
 ### 4. Design system and UI foundation · needs a decision
