@@ -4,3 +4,5 @@ minimumReleaseAgeStrict: true
 allowBuilds:
   # Ships a ready made Mac binary, so its install script is not needed.
   '@parcel/watcher': false
+  # The `prepare` script installs the git hook instead.
+  simple-git-hooks: false
