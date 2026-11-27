@@ -16,7 +16,9 @@ const themed = createThemedStyles(({ colors, border, radius, spacing }) =>
       backgroundColor: colors.surface,
       borderColor: colors.outline,
       borderWidth: border.width,
-      borderRadius: radius.pill,
+      // Not radius.pill: a chip that wraps at large text sizes would become an oval and its
+      // text would cross the outline. radius.lg is still a full pill for a one line chip.
+      borderRadius: radius.lg,
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.xs,
     },

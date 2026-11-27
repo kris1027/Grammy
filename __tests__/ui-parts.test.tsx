@@ -9,9 +9,15 @@ import { Icon } from '@/ui/icon';
 import { NumberBadge } from '@/ui/number-badge';
 import { Screen } from '@/ui/screen';
 import { SketchCard } from '@/ui/sketch-card';
-import { SCROLL_HINT, SketchTable, tableNeedsScroll } from '@/ui/sketch-table';
+import {
+  columnMinWidths,
+  longestWordWidth,
+  SCROLL_HINT,
+  SketchTable,
+  tableNeedsScroll,
+} from '@/ui/sketch-table';
 import { SpeechBubble } from '@/ui/speech-bubble';
-import { themes } from '@/ui/theme';
+import { border, radius, sizes, spacing, themes, typeScale } from '@/ui/theme';
 
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
   __esModule: true,
@@ -108,8 +114,19 @@ describe.each(['light', 'dark'] as const)('%s mode (covers: AC-5)', (mode) => {
     expect(screen.getByText('podmiot')).toHaveStyle({ fontSize: 16 });
     expect(screen.getByText('podmiot').parent).toHaveStyle({
       borderColor: colors.outline,
-      borderRadius: 999,
+      borderRadius: radius.lg,
     });
+  });
+
+  test('Chip corners stay small enough for wrapped text (regression, AC-4)', async () => {
+    // A 999 radius turns a chip that wraps at large text sizes into an oval, and its
+    // text then crosses the outline. radius.lg still reads as a pill on one line
+    // (a one line chip is 34 points tall) and keeps wrapped text inside the edge.
+    await render(<Chip>czasownik (+ -s / -es dla he, she, it)</Chip>);
+    const chip = screen.getByText('czasownik (+ -s / -es dla he, she, it)').parent;
+    expect(chip).toHaveStyle({ borderRadius: radius.lg });
+    const oneLineHeight = typeScale.callout.lineHeight + 2 * spacing.xs + 2 * border.width;
+    expect(radius.lg).toBeGreaterThanOrEqual(oneLineHeight / 2);
   });
 
   test('Icon takes its tint from the theme', async () => {
@@ -169,7 +186,10 @@ describe('SpeechBubble (covers: AC-5)', () => {
 
 describe('SketchTable (covers: AC-4, AC-5)', () => {
   const header = ['Osoba', 'Twierdzenie', 'Przeczenie', 'Pytanie'];
-  const rows = [['I', 'I work', "I don't work", 'Do I work?']];
+  const rows = [
+    ['I / you / we / they', 'I work', "I don't work", 'Do I work?'],
+    ['he / she / it', 'She works', "She doesn't work", 'Does she work?'],
+  ];
 
   const layout = (width: number) =>
     act(() =>
@@ -201,8 +221,33 @@ describe('SketchTable (covers: AC-4, AC-5)', () => {
     expect(screen.getByText('x')).toBeOnTheScreen();
   });
 
-  test('the width rule counts columns times the scaled minimum', () => {
-    expect(tableNeedsScroll(4, 320, 1)).toBe(false);
-    expect(tableNeedsScroll(4, 320, 3)).toBe(true);
+  test('estimates a word no narrower than SF Pro semibold draws it (16 pt)', () => {
+    // Widths measured with the system font, semibold, 16 pt.
+    const measured = { Twierdzenie: 90.5, Przeczenie: 82.2, Pytanie: 56.3, Osoba: 48.4 };
+    Object.entries(measured).forEach(([word, width]) =>
+      expect(longestWordWidth(word, 16)).toBeGreaterThanOrEqual(width - 0.5),
+    );
+    expect(longestWordWidth("I don't work", 16)).toBe(longestWordWidth("don't", 16));
+    expect(longestWordWidth('', 16)).toBe(0);
+  });
+
+  test('every column is at least its longest word plus padding, never below the floor', () => {
+    const widths = columnMinWidths([header, ...rows], 4, 1);
+    expect(widths).toHaveLength(4);
+    widths.forEach((width) => expect(width).toBeGreaterThanOrEqual(sizes.minColumn));
+    expect(widths[1]).toBeGreaterThanOrEqual(longestWordWidth('Twierdzenie', 16) + 2 * spacing.sm);
+    expect(columnMinWidths([['a']], 1, 2)).toEqual([sizes.minColumn * 2]);
+  });
+
+  test('the Present Simple table fits an iPhone at normal size and scrolls one step up', () => {
+    // Regression: at 80 points per column "Twierdzenie" broke mid word on a 402 point iPhone.
+    const iPhoneContent = 402 - 2 * spacing.lg;
+    expect(tableNeedsScroll(columnMinWidths([header, ...rows], 4, 1), iPhoneContent)).toBe(false);
+    expect(tableNeedsScroll(columnMinWidths([header, ...rows], 4, 1.24), iPhoneContent)).toBe(true);
+  });
+
+  test('six short columns still scroll at normal size (the floor)', () => {
+    const six = [['I', 'you', 'he', 'she', 'we', 'they']];
+    expect(tableNeedsScroll(columnMinWidths(six, 6, 1), 402 - 2 * spacing.lg)).toBe(true);
   });
 });

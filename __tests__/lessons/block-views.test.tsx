@@ -83,7 +83,7 @@ describe('BlockView (covers: AC-6, AC-7)', () => {
       />,
     );
     expect(screen.getByText('Czasownik work')).toHaveStyle({ fontSize: 13 });
-    expect(screen.getByText('Osoba')).toHaveStyle({ fontWeight: '600' });
+    expect(screen.getByText('Osoba')).toHaveStyle({ fontSize: 16, fontWeight: '600' });
     expect(screen.getByText('works')).toHaveStyle({ fontWeight: '600' });
     expect(screen.getByText('he')).toHaveStyle({ fontSize: 16 });
   });
@@ -102,24 +102,23 @@ describe('BlockView (covers: AC-6, AC-7)', () => {
     expect(screen.getByText('Uwaga.')).toHaveStyle({ fontSize: 13, fontStyle: 'italic' });
   });
 
-  test('tip block reads as "Wskazówka" with no markup', async () => {
+  test('tip block: the bulb reads "Wskazówka" and its topic link stays reachable', async () => {
+    const onOpenTopic = jest.fn();
     await render(
       <BlockView
         block={{
           type: 'tip',
           text: 'Jeśli coś dzieje się **teraz**, w tej chwili, użyj [[present-continuous]].',
         }}
+        onOpenTopic={onOpenTopic}
       />,
     );
-    expect(
-      screen.getByLabelText(
-        'Wskazówka: Jeśli coś dzieje się teraz, w tej chwili, użyj Present Continuous.',
-      ),
-    ).toBeOnTheScreen();
-    expect(screen.getByTestId('icon', { includeHiddenElements: true })).toHaveProp(
-      'name',
-      'lightbulb.fill',
-    );
+    expect(screen.getByRole('image', { name: 'Wskazówka' })).toHaveProp('name', 'lightbulb.fill');
+    // Not grouped into one element, or VoiceOver could not reach the link (regression).
+    const link = screen.getByRole('link', { name: 'Present Continuous' });
+    await fireEvent.press(link);
+    expect(onOpenTopic).toHaveBeenCalledWith('present-continuous');
+    expect(screen.queryByLabelText(/^Wskazówka: /)).toBeNull();
   });
 
   test('formula block is one element labelled with its parts', async () => {

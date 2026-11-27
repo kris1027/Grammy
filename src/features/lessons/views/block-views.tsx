@@ -19,7 +19,7 @@ import { plainText } from './plain-text';
 type BlockOf<T extends Block['type']> = Extract<Block, { type: T }>;
 type OpenTopic = { readonly onOpenTopic?: (id: TopicId) => void };
 
-const themed = createThemedStyles(({ spacing }) =>
+const themed = createThemedStyles(({ spacing, typeScale }) =>
   StyleSheet.create({
     stack: { gap: spacing.md },
     tight: { gap: spacing.xs },
@@ -27,6 +27,8 @@ const themed = createThemedStyles(({ spacing }) =>
     itemText: { flex: 1, gap: spacing.xs },
     formulaParts: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.sm },
     struck: { textDecorationLine: 'line-through' },
+    // Table header: cell size, semibold, so whole words fit the columns (spec 0003, AC-4).
+    headerCell: { fontWeight: typeScale.strong.fontWeight },
   }),
 );
 
@@ -34,6 +36,8 @@ export function TableBlock({
   block,
   onOpenTopic,
 }: { readonly block: BlockOf<'table'> } & OpenTopic) {
+  const styles = useThemedStyles(themed);
+
   return (
     <SketchTable
       caption={
@@ -42,13 +46,23 @@ export function TableBlock({
         )
       }
       header={block.header?.map((cell) => (
-        <InlineText key={cell} text={cell} variant="strong" onOpenTopic={onOpenTopic} />
+        <InlineText
+          key={cell}
+          text={cell}
+          variant="callout"
+          style={styles.headerCell}
+          onOpenTopic={onOpenTopic}
+        />
       ))}
       rows={block.rows.map((row) =>
         row.map((cell, column) => (
           <InlineText key={column} text={cell} variant="callout" onOpenTopic={onOpenTopic} />
         )),
       )}
+      plain={{
+        header: block.header?.map(plainText),
+        rows: block.rows.map((row) => row.map(plainText)),
+      }}
     />
   );
 }
@@ -77,9 +91,13 @@ export function ExamplesBlock({
   );
 }
 
+/**
+ * Not grouped into one screen reader element: the bulb is read as `Wskazówka`, then the
+ * text, so VoiceOver can still reach each topic link in it (spec 0003, AC-7).
+ */
 export function TipBlock({ block, onOpenTopic }: { readonly block: BlockOf<'tip'> } & OpenTopic) {
   return (
-    <SpeechBubble icon="lightbulb.fill" accessibilityText={`Wskazówka: ${plainText(block.text)}`}>
+    <SpeechBubble icon="lightbulb.fill" iconLabel="Wskazówka">
       <InlineText text={block.text} onOpenTopic={onOpenTopic} />
     </SpeechBubble>
   );

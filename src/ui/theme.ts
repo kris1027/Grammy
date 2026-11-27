@@ -52,8 +52,8 @@ export const sizes = {
   tail: 14,
   /** Tail distance from the bubble's left edge. */
   tailInset: 20,
-  /** Table column minimum width, before font scale. 80, not the spec's 96, so 4 columns fit an iPhone. */
-  minColumn: 80,
+  /** Table column floor, before font scale. Columns are otherwise as wide as their longest word. */
+  minColumn: 64,
   /** Default icon size. */
   icon: 20,
   /** Patrick Hand headings stop growing here. */

@@ -7,6 +7,8 @@ import { createThemedStyles, useThemedStyles } from './themed-styles';
 export type SpeechBubbleProps = {
   /** Optional leading SF Symbol, drawn in accentText. */
   readonly icon?: SymbolName;
+  /** Polish label for the icon. Without it the icon is decorative. */
+  readonly iconLabel?: string;
   /** When given, the whole bubble is one screen reader element with this label. */
   readonly accessibilityText?: string;
   readonly children: ReactNode;
@@ -59,7 +61,7 @@ const themed = createThemedStyles(({ colors, border, radius, spacing, shadowOffs
 );
 
 /** An outlined speech bubble with a small tail and an orange edge stripe. */
-export function SpeechBubble({ icon, accessibilityText, children }: SpeechBubbleProps) {
+export function SpeechBubble({ icon, iconLabel, accessibilityText, children }: SpeechBubbleProps) {
   const styles = useThemedStyles(themed);
   const a11y =
     accessibilityText === undefined
@@ -70,7 +72,7 @@ export function SpeechBubble({ icon, accessibilityText, children }: SpeechBubble
     <View style={styles.outer} {...a11y}>
       <View style={styles.body}>
         <View style={styles.stripe} />
-        {icon !== undefined && <Icon name={icon} color="accentText" />}
+        {icon !== undefined && <Icon name={icon} color="accentText" label={iconLabel} />}
         <View style={styles.content}>{children}</View>
       </View>
       <View style={styles.tail} />
