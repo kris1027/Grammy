@@ -90,11 +90,12 @@ Turn your sketch picture into a clean, reusable look: colours, fonts, icons, car
 One complete Present Simple lesson, from stored content to the finished screen. It proves the content shape and design before more lessons are written.
 **Done when:** you can open the app on your iPhone without internet and read the whole Present Simple lesson in Polish, in light and dark, and you have checked that its grammar is correct.
 **Spec:** [0004](../specs/0004-first-lesson-on-iphone/index.md)
+**Code:** code in `src/features/lessons/screens/`, `src/features/lessons/views/topic-card.tsx`, route `src/app/lesson/[id].tsx` (tests in `__tests__/lessons/`)
 - [x] Design it (spec): `/architect first lesson on your iPhone`
 - [ ] Build it: `/develop first lesson on your iPhone`
-  - [ ] Thin thread: home card, `/lesson/[id]` route and the lesson page with numbered sections and `Zobacz też` (AC-1, AC-2)
-  - [ ] Not written and not found pages, link and card navigation, header title on scroll (AC-3, AC-4, AC-5, AC-6)
-  - [ ] English voice for English text, the `example-count` rule, and the full 8 section Present Simple lesson (AC-7, AC-8, AC-9)
+  - [x] Thin thread: home card, `/lesson/[id]` route and the lesson page with numbered sections and `Zobacz też` (AC-1, AC-2)
+  - [x] Not written and not found pages, link and card navigation, header title on scroll (AC-3, AC-4, AC-5, AC-6)
+  - [x] English voice for English text, the `example-count` rule, and the full 8 section Present Simple lesson (AC-7, AC-8, AC-9)
   - [ ] Design notes, light and dark, large text and an offline Release run on the iPhone (AC-10, AC-11)
   - [ ] Your grammar check, then mark the lesson `checked` (AC-12)
 - [ ] Verify it: `/check verify first lesson on your iPhone`
