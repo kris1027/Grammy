@@ -14,7 +14,7 @@ import {
   NOT_WRITTEN_TEXT,
   SEE_ALSO,
 } from '@/features/lessons/screens/lesson-screen';
-import { themes } from '@/ui/theme';
+import { sizes, themes } from '@/ui/theme';
 
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
   __esModule: true,
@@ -233,4 +233,42 @@ test('a draft lesson shows the draft chip (covers: AC-2, AC-12)', async () => {
 
   expect(screen.getByRole('heading', { name: 'Present Simple' })).toBeOnTheScreen();
   expect(screen.getByText(DRAFT_CHIP)).toBeOnTheScreen();
+});
+
+test('the summary card shows and Zobacz też follows the related order (covers: AC-2)', async () => {
+  const found = realGetLesson('present-simple');
+  if (found.kind !== 'ok') throw new Error('Present Simple should be written');
+  await open('/lesson/present-simple');
+
+  expect(screen.getByText(found.topic.summary)).toBeOnTheScreen();
+  const cardTitles = screen
+    .getAllByRole('link')
+    .map((node) => node.props.accessibilityLabel as string | undefined)
+    .filter((label) => label?.endsWith('lekcja jeszcze niegotowa'))
+    .map((label) => label?.split(',')[0]);
+  expect(cardTitles).toEqual(['Present Continuous', 'Past Simple']);
+});
+
+test('a not written page shows its title in the header once you scroll past it (covers: AC-3, AC-5)', async () => {
+  await open('/lesson/past-simple');
+  await fireEvent(screen.getByTestId('page-top'), 'layout', {
+    nativeEvent: { layout: { x: 0, y: 16, width: 360, height: 100 } },
+  });
+
+  await fireEvent.scroll(scrollView(), { nativeEvent: { contentOffset: { x: 0, y: 115 } } });
+  expect(topHeader()?.props.title).toBe('');
+
+  await fireEvent.scroll(scrollView(), { nativeEvent: { contentOffset: { x: 0, y: 116 } } });
+  expect(topHeader()?.props.title).toBe('Past Simple');
+
+  await fireEvent.scroll(scrollView(), { nativeEvent: { contentOffset: { x: 0, y: 0 } } });
+  expect(topHeader()?.props.title).toBe('');
+});
+
+test('the way home on the not found page is tall enough to press (covers: AC-10)', async () => {
+  await open('/lesson/nie-ma-takiej');
+
+  expect(screen.getByRole('link', { name: BACK_HOME })).toHaveStyle({
+    minHeight: sizes.minTouch,
+  });
 });
