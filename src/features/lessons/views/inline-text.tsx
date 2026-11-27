@@ -15,6 +15,8 @@ export type InlineTextProps = {
   /** Without it links are styled but not pressable. */
   readonly onOpenTopic?: (id: TopicId) => void;
   readonly style?: StyleProp<TextStyle>;
+  /** `en` makes VoiceOver read the whole paragraph, links included, in an English voice. */
+  readonly language?: 'en';
 };
 
 const themed = createThemedStyles(({ colors, typeScale }) =>
@@ -33,11 +35,17 @@ export function InlineText({
   italic,
   onOpenTopic,
   style,
+  language,
 }: InlineTextProps) {
   const styles = useThemedStyles(themed);
 
   return (
-    <AppText variant={variant} italic={italic} style={style}>
+    <AppText
+      variant={variant}
+      italic={italic}
+      style={style}
+      accessibilityLanguage={language === 'en' ? 'en-US' : undefined}
+    >
       {parseInline(text).map((span, index) => {
         switch (span.kind) {
           case 'text':

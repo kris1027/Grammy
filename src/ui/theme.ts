@@ -60,6 +60,8 @@ export const sizes = {
   maxHeadingScale: 1.5,
   /** Icons, badges and dots stop growing here. */
   maxGraphicScale: 2,
+  /** Minimum height of anything you can press (Apple's 44 point touch target). */
+  minTouch: 44,
 } as const;
 
 /** Points before Dynamic Type. Patrick Hand has one weight, so its styles set no fontWeight. */

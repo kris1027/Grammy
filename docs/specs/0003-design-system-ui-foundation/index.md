@@ -171,7 +171,7 @@ Font family name for Patrick Hand lives once in `src/ui/fonts.ts` (`fonts.hand`)
 | Showcase | Lesson shown | `getLesson('present-simple')`; `kind !== 'ok'` shows the fallback text |
 | Showcase | Polish letters line | Constant `Zażółć gęślą jaźń ĄĆĘŁŃÓŚŹŻ` in the showcase file |
 | Showcase link press | Topic opened | Showcase passes no `onOpenTopic`, so links are styled but not pressable yet (feature 5 wires real navigation) |
-| Home | `Zobacz wzornik` link | `expo-router` `Link href="/showcase"` wrapping an `AppText` in `accentText`, underlined, `role="link"`, placed under the title |
+| Home | `Zobacz wzornik` link | `expo-router` `Link href="/showcase" asChild` wrapping a `TextLink` (`src/ui/text-link.tsx`: a `Pressable` with `role="link"`, at least `minTouch` tall, around underlined `accentText`), placed under the title. Revised after spec 0004 verify: a lone `Text` with `role="link"` reads as static text on iOS |
 | Accessibility labels | Spoken text of tips, formulas, mistakes | `plainText()` of the block strings plus the fixed prefixes |
 | Header | Title font, colours, back label | `fonts.hand`, theme tokens, the constant `Wstecz` in `_layout.tsx` |
 | App icon, splash | Artwork, background colours | New SVG written in this feature; splash colours `paper` light `#FBF6EC` and dark `#1F1C1A` in `app.json` |

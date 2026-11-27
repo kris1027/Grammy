@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react-native';
 import { useColorScheme } from 'react-native';
 
 import HomeScreen from '@/app/index';
-import { themes } from '@/ui/theme';
+import { sizes, themes } from '@/ui/theme';
 
 // The iPhone's appearance setting is the only thing faked here.
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
@@ -29,11 +29,30 @@ test('shows the Polish title', async () => {
   expect(title()).toBeOnTheScreen();
 });
 
+test('shows the Present Simple card above the sample book link (spec 0004, covers: AC-1)', async () => {
+  await render(<HomeScreen />);
+
+  const card = screen.getByRole('link', { name: 'Otwórz lekcję: Present Simple' });
+  expect(card).toBeOnTheScreen();
+  expect(screen.getByText('czas teraźniejszy prosty')).toBeOnTheScreen();
+  expect(screen.getByText('Present Simple')).toBeOnTheScreen();
+
+  const links = screen.getAllByRole('link').map((node) => node.props.accessibilityLabel ?? null);
+  expect(links).toEqual(['Otwórz lekcję: Present Simple', null]);
+});
+
+test('the sample book link is tall enough to press (spec 0004, covers: AC-10)', async () => {
+  await render(<HomeScreen />);
+
+  expect(screen.getByRole('link', { name: 'Zobacz wzornik' })).toHaveStyle({
+    minHeight: sizes.minTouch,
+  });
+});
+
 test('links to the sample book (covers: AC-8)', async () => {
   await render(<HomeScreen />);
 
-  const link = screen.getByRole('link', { name: 'Zobacz wzornik' });
-  expect(link).toHaveStyle({
+  expect(screen.getByText('Zobacz wzornik')).toHaveStyle({
     color: themes.light.colors.accentText,
     textDecorationLine: 'underline',
   });

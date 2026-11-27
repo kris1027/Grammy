@@ -57,8 +57,9 @@ describe.each(['light', 'dark'] as const)('in %s mode (covers: AC-8)', (mode) =>
     lookup.lesson.sections.forEach((section) =>
       expect(screen.getByRole('heading', { name: section.title })).toBeOnTheScreen(),
     );
-    expect(screen.getByLabelText('Błędnie: He work every day.')).toBeOnTheScreen();
-    expect(screen.getByRole('image', { name: 'Wskazówka' })).toBeOnTheScreen();
+    expect(screen.getByText('He work in an office.')).toBeOnTheScreen();
+    expect(screen.getAllByText('Błędnie').length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('image', { name: 'Wskazówka' }).length).toBeGreaterThan(0);
     expect(screen.getByRole('link', { name: 'Present Continuous' })).toBeOnTheScreen();
     expect(screen.getByLabelText(/^Wzór, Twierdzenie: /)).toBeOnTheScreen();
     expect(screen.getByText('Czasownik work (pracować)')).toBeOnTheScreen();

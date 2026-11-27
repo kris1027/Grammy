@@ -17,6 +17,7 @@ import {
   tableNeedsScroll,
 } from '@/ui/sketch-table';
 import { SpeechBubble } from '@/ui/speech-bubble';
+import { TextLink } from '@/ui/text-link';
 import { border, radius, sizes, spacing, themes, typeScale } from '@/ui/theme';
 
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
@@ -249,5 +250,25 @@ describe('SketchTable (covers: AC-4, AC-5)', () => {
   test('six short columns still scroll at normal size (the floor)', () => {
     const six = [['I', 'you', 'he', 'she', 'we', 'they']];
     expect(tableNeedsScroll(columnMinWidths(six, 6, 1), 402 - 2 * spacing.lg)).toBe(true);
+  });
+});
+
+describe('TextLink (spec 0004, covers: AC-6, AC-10)', () => {
+  test('puts the link role on a view, so iOS reads it as a link, not static text', async () => {
+    await render(<TextLink>Wróć do strony głównej</TextLink>);
+    const link = screen.getByRole('link', { name: 'Wróć do strony głównej' });
+    expect(link.type).toBe('View');
+    expect(link).toHaveStyle({ minHeight: sizes.minTouch });
+  });
+
+  test('shows underlined accent text and calls onPress', async () => {
+    const onPress = jest.fn();
+    await render(<TextLink onPress={onPress}>Zobacz wzornik</TextLink>);
+    expect(screen.getByText('Zobacz wzornik')).toHaveStyle({
+      color: themes.light.colors.accentText,
+      textDecorationLine: 'underline',
+    });
+    await fireEvent.press(screen.getByRole('link', { name: 'Zobacz wzornik' }));
+    expect(onPress).toHaveBeenCalledTimes(1);
   });
 });

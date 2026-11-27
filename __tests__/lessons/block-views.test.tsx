@@ -149,8 +149,12 @@ describe('BlockView (covers: AC-6, AC-7)', () => {
       />,
     );
 
-    expect(screen.getByLabelText('Błędnie: He work every day.')).toBeOnTheScreen();
-    expect(screen.getByLabelText('Poprawnie: He works every day.')).toBeOnTheScreen();
+    // Two elements per row: the Polish label, then the English sentence (spec 0004, AC-9).
+    expect(screen.getByText('Błędnie')).toBeOnTheScreen();
+    expect(screen.getByText('Poprawnie')).toBeOnTheScreen();
+    expect(screen.getByText('He work every day.')).toHaveProp('accessibilityLanguage', 'en-US');
+    expect(screen.getByText('He works every day.')).toHaveProp('accessibilityLanguage', 'en-US');
+    expect(screen.getByText('Błędnie')).not.toHaveProp('accessibilityLanguage');
     expect(screen.getByText('He work every day.')).toHaveStyle({
       textDecorationLine: 'line-through',
     });
@@ -188,5 +192,55 @@ describe('SectionView (covers: AC-6)', () => {
   test('an empty section renders only the heading', async () => {
     await render(<SectionView section={{ title: 'Pusta', blocks: [] }} />);
     expect(screen.getByRole('heading', { name: 'Pusta' })).toBeOnTheScreen();
+  });
+});
+
+describe('Reading language and numbered sections (spec 0004, covers: AC-9)', () => {
+  test('English example lines use the English voice, Polish lines do not', async () => {
+    await render(
+      <BlockView
+        block={{
+          type: 'examples',
+          items: [
+            { en: 'I work.', pl: 'Pracuję.', note: 'Nawyk.' },
+            { en: 'He works.', pl: 'On pracuje.' },
+            { en: 'We work.', pl: 'Pracujemy.' },
+          ],
+        }}
+      />,
+    );
+
+    expect(screen.getByText('I work.')).toHaveProp('accessibilityLanguage', 'en-US');
+    expect(screen.getByText('Pracuję.')).not.toHaveProp('accessibilityLanguage');
+    expect(screen.getByText('Nawyk.')).not.toHaveProp('accessibilityLanguage');
+  });
+
+  test('the English voice covers a link inside the sentence', async () => {
+    await render(<InlineText text="See [[present-simple]]." language="en" />);
+
+    const link = screen.getByRole('link', { name: 'Present Simple' });
+    expect(link.parent).toHaveProp('accessibilityLanguage', 'en-US');
+  });
+
+  test('a numbered section reads as one heading "N. title" and hides the badge', async () => {
+    await render(
+      <SectionView
+        section={{ title: 'Budowa', blocks: [{ type: 'text', text: 'x' }] }}
+        number={2}
+      />,
+    );
+
+    expect(screen.getByRole('heading', { name: '2. Budowa' })).toBeOnTheScreen();
+    expect(screen.queryByTestId('number-badge')).toBeNull();
+    expect(screen.getByTestId('number-badge', { includeHiddenElements: true })).toBeOnTheScreen();
+  });
+
+  test('without a number a section has no badge', async () => {
+    await render(
+      <SectionView section={{ title: 'Budowa', blocks: [{ type: 'text', text: 'x' }] }} />,
+    );
+
+    expect(screen.getByRole('heading', { name: 'Budowa' })).toBeOnTheScreen();
+    expect(screen.queryByTestId('number-badge', { includeHiddenElements: true })).toBeNull();
   });
 });

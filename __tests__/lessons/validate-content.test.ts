@@ -43,6 +43,12 @@ const base: Content = {
   },
 };
 
+const example = (n: number) => ({ en: `I work ${n}.`, pl: `Pracuję ${n}.` });
+const examples = (count: number): Block => ({
+  type: 'examples',
+  items: Array.from({ length: count }, (_, i) => example(i + 1)),
+});
+
 const withLesson = (lesson: Lesson): Content => ({
   ...base,
   lessonsById: { 'present-simple': lesson },
@@ -105,12 +111,18 @@ const failing: Readonly<Record<ContentRule, Content>> = {
   'no-sections': withLesson({ review: 'draft', sections: [] }),
   'empty-section': withLesson(lessonWith([])),
   'empty-block': withLesson(lessonWith([{ type: 'examples', items: [] }])),
+  'example-count': withLesson(lessonWith([examples(2)])),
   'short-formula': withLesson(lessonWith([{ type: 'formula', parts: ['podmiot'] }])),
   'ragged-table': withLesson(
     lessonWith([{ type: 'table', header: ['a', 'b'], rows: [['1', '2'], ['3']] }]),
   ),
   'empty-text': withLesson(
-    lessonWith([{ type: 'examples', items: [{ en: 'I work.', pl: 'Pracuję.', note: '  ' }] }]),
+    lessonWith([
+      {
+        type: 'examples',
+        items: [{ en: 'I work.', pl: 'Pracuję.', note: '  ' }, example(2), example(3)],
+      },
+    ]),
   ),
   'bad-markup': withLesson(lessonWith([{ type: 'mistake', wrong: '**x', right: 'x' }])),
 };
@@ -151,7 +163,10 @@ test('points at the exact place of a problem', () => {
           title: 'Druga',
           blocks: [
             { type: 'text', text: 'ok' },
-            { type: 'examples', items: [{ en: 'He ==works.', pl: 'Pracuje.' }] },
+            {
+              type: 'examples',
+              items: [{ en: 'He ==works.', pl: 'Pracuje.' }, example(2), example(3)],
+            },
           ],
         },
       ],
@@ -176,4 +191,18 @@ test('checks topic and category text too', () => {
     ['empty-text', 'category:tenses/summary'],
     ['dead-link', 'topic:present-simple/subtitle'],
   ]);
+});
+
+test.each([2, 6])('reports exactly example-count for %i examples (covers: AC-8)', (count) => {
+  expect(run(withLesson(lessonWith([examples(count)]))).map((p) => p.rule)).toEqual([
+    'example-count',
+  ]);
+});
+
+test.each([3, 5])('accepts %i examples (covers: AC-8)', (count) => {
+  expect(run(withLesson(lessonWith([examples(count)])))).toEqual([]);
+});
+
+test('an empty examples block reports only empty-block, not example-count (covers: AC-8)', () => {
+  expect(run(withLesson(lessonWith([examples(0)]))).map((p) => p.rule)).toEqual(['empty-block']);
 });

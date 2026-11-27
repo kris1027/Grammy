@@ -22,6 +22,7 @@ export const CONTENT_RULES = [
   'no-sections',
   'empty-section',
   'empty-block',
+  'example-count',
   'short-formula',
   'ragged-table',
   'empty-text',
@@ -37,6 +38,10 @@ export type ContentProblem = {
 };
 
 const ID_FORMAT = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** An examples block shows 3 to 5 sentences (spec 0004). 0 is `empty-block` instead. */
+export const MIN_EXAMPLES = 3;
+export const MAX_EXAMPLES = 5;
 
 const problem = (rule: ContentRule, where: string, detail: string): ContentProblem => ({
   rule,
@@ -120,7 +125,19 @@ const checkRelated = (
 
 const checkBlock = (where: string, block: Block): readonly ContentProblem[] => {
   switch (block.type) {
-    case 'examples':
+    case 'examples': {
+      const count = block.items.length;
+      if (count === 0) return [problem('empty-block', where, 'empty examples')];
+      return count < MIN_EXAMPLES || count > MAX_EXAMPLES
+        ? [
+            problem(
+              'example-count',
+              where,
+              `${count} examples, expected ${MIN_EXAMPLES} to ${MAX_EXAMPLES}`,
+            ),
+          ]
+        : [];
+    }
     case 'list':
       return block.items.length === 0 ? [problem('empty-block', where, `empty ${block.type}`)] : [];
     case 'formula':
