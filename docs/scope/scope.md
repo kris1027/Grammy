@@ -21,7 +21,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 |---|---------|-------|--------|
 | 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | done |
-| 3 | Lesson content model | Foundation | planned |
+| 3 | Lesson content model | Foundation | in-progress |
 | 4 | Design system and UI foundation | Foundation | planned |
 | 5 | First lesson on your iPhone | Skeleton | planned |
 | 6 | Home and tense map | Slice 1 | planned |
@@ -58,10 +58,18 @@ Write down the project rules and set up automatic code checks, based on the real
 - [x] Install the tooling: `/develop tooling`
 - [x] Check it runs clean: `/check verify tooling`
 
-### 3. Lesson content model · needs a decision
+### 3. Lesson content model · in-progress
 Define the shape every lesson follows (headings, explanations in Polish, tables, examples, tips) and how lessons are grouped. It matters because all content depends on it.
 **Done when:** a tense lesson and a different kind of grammar topic both fit the same shape, and adding a lesson needs no screen changes. All content ships inside the app.
-- [ ] Design it (spec): `/architect lesson content model`
+**Spec:** [0002](../specs/0002-lesson-content-model.md)
+- [x] Design it (spec): `/architect lesson content model`
+- [ ] Build it: `/develop lesson content model`
+  - [ ] Types, lookups and a thin Present Simple thread, with odd input tests (AC-3)
+  - [ ] Inline markup parser and checker (AC-4)
+  - [ ] Full catalog of 12 tenses plus articles, and the tense grid (AC-2)
+  - [ ] Content validator and the two short sample lessons (AC-1, AC-5)
+  - [ ] Draft list and extensibility test (AC-6, AC-7)
+- [ ] Verify it: `/check verify lesson content model`
 
 ### 4. Design system and UI foundation · needs a decision
 Turn your sketch picture into a clean, reusable look: colours, fonts, icons, cards, tables and speech bubbles, in light and dark.
