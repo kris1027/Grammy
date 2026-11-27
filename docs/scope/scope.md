@@ -98,8 +98,8 @@ One complete Present Simple lesson, from stored content to the finished screen. 
   - [x] English voice for English text, the `example-count` rule, and the full 8 section Present Simple lesson (AC-7, AC-8, AC-9)
   - [x] Design notes, light and dark, large text and an offline Release run on the iPhone (AC-10, AC-11)
   - [x] Your grammar check, then mark the lesson `checked` (AC-12)
-- [ ] Verify it: `/check verify first lesson on your iPhone`
-- [ ] Test it: `/test first lesson on your iPhone`
+- [x] Verify it: `/check verify first lesson on your iPhone`
+- [x] Test it: `/test first lesson on your iPhone`
 
 ## Slice 1: Starter tenses
 
