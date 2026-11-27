@@ -89,12 +89,12 @@ test('the home card opens the Present Simple lesson (covers: AC-1)', async () =>
   expect(screen.getByRole('heading', { name: 'Present Simple' })).toBeOnTheScreen();
 });
 
-test('shows the whole lesson in order, with numbered sections (covers: AC-2, AC-7)', async () => {
+test('shows the whole lesson in order, with numbered sections (covers: AC-2, AC-7, AC-12)', async () => {
   await open('/lesson/present-simple');
 
   expect(screen.getByRole('heading', { name: 'Present Simple' })).toBeOnTheScreen();
   expect(screen.getByText('czas teraźniejszy prosty')).toBeOnTheScreen();
-  expect(screen.getByText(DRAFT_CHIP)).toBeOnTheScreen();
+  expect(screen.queryByText(DRAFT_CHIP)).toBeNull();
 
   const headings = screen.getAllByRole('heading').map((node) => node.props.accessibilityLabel);
   expect(headings.filter((label) => /^\d+\. /.test(label ?? ''))).toEqual(SECTION_LABELS);
@@ -224,15 +224,13 @@ test('an id that is not in the catalog never throws (covers: AC-6)', async () =>
   expect(screen.getByRole('heading', { name: NOT_FOUND_TITLE })).toBeOnTheScreen();
 });
 
-test('a checked lesson has no draft chip (covers: AC-12)', async () => {
+test('a draft lesson shows the draft chip (covers: AC-2, AC-12)', async () => {
   mockGetLesson.mockImplementation((id) => {
     const found = realGetLesson(id);
-    return found.kind === 'ok'
-      ? { ...found, lesson: { ...found.lesson, review: 'checked' } }
-      : found;
+    return found.kind === 'ok' ? { ...found, lesson: { ...found.lesson, review: 'draft' } } : found;
   });
   await open('/lesson/present-simple');
 
   expect(screen.getByRole('heading', { name: 'Present Simple' })).toBeOnTheScreen();
-  expect(screen.queryByText(DRAFT_CHIP)).toBeNull();
+  expect(screen.getByText(DRAFT_CHIP)).toBeOnTheScreen();
 });

@@ -1,11 +1,11 @@
 import type { Lesson } from '../../model/types';
 import type { TopicId } from '../catalog';
 
-// Full A1 to A2 lesson in the 8 section template (spec 0004). AI draft: it stays
-// `draft` until you check it with the spec's Grammar checklist.
+// Full A1 to A2 lesson in the 8 section template (spec 0004). Checked by you with
+// the spec's Grammar checklist (AC-12).
 
 export const presentSimple: Lesson<TopicId> = {
-  review: 'draft',
+  review: 'checked',
   related: ['present-continuous', 'past-simple'],
   sections: [
     {

@@ -47,8 +47,8 @@ test('the two sample lessons use all 7 block types, a link and a related entry (
   expect(samples.some(([, lesson]) => (lesson.related ?? []).length > 0)).toBe(true);
 });
 
-test('both sample lessons ship as drafts (covers: AC-7)', () => {
-  expect(listDraftLessons().map((t) => t.id)).toEqual(['present-simple', 'articles']);
+test('Present Simple is checked and only Articles is still a draft (covers: AC-12)', () => {
+  expect(listDraftLessons().map((t) => t.id)).toEqual(['articles']);
 });
 
 const PRESENT_SIMPLE_SECTIONS = [
