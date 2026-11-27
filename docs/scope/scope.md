@@ -22,7 +22,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 1 | Stack and architecture | Foundation | done |
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Lesson content model | Foundation | done |
-| 4 | Design system and UI foundation | Foundation | in-progress |
+| 4 | Design system and UI foundation | Foundation | done |
 | 5 | First lesson on your iPhone | Skeleton | planned |
 | 6 | Home and tense map | Slice 1 | planned |
 | 7 | Starter tense lessons | Slice 1 | planned |
@@ -72,17 +72,17 @@ Define the shape every lesson follows (headings, explanations in Polish, tables,
   - [x] Draft list and extensibility test (AC-6, AC-7)
 - [x] Verify it: `/check verify lesson content model`
 
-### 4. Design system and UI foundation · in-progress
+### 4. Design system and UI foundation · done
 Turn your sketch picture into a clean, reusable look: colours, fonts, icons, cards, tables and speech bubbles, in light and dark.
 **Done when:** `design.md` and the base components cover light and dark mode, Polish letters display correctly, text and tables are easy to read on an iPhone, and the style does not copy artwork from the sample picture.
-**Spec:** [0003](../specs/0003-design-system-ui-foundation/index.md) · code in `src/ui`, `src/features/lessons/views`, `src/features/showcase` · note: `sizes.minColumn` is 80, not 96, owed to `/architect`
+**Spec:** [0003](../specs/0003-design-system-ui-foundation/index.md) · code in `src/ui`, `src/features/lessons/views`, `src/features/showcase` · spec revised 2026-11-27 after `/check verify`: table columns sized by their longest word, tip links reachable by VoiceOver, back button keeps the iOS glass colour
 - [x] Design it (spec): `/architect design system and UI foundation`
 - [x] Build it: `/develop design system and UI foundation`
   - [x] Font, tokens, contrast checks and a thin showcase thread on the iPhone (AC-1, AC-2, AC-3, AC-11)
   - [x] Shared parts in `src/ui` (AC-4, AC-5)
   - [x] Views for the 7 lesson block types and the full showcase (AC-6, AC-7, AC-8)
   - [x] App icon, splash and `docs/design.md` (AC-9, AC-10)
-- [ ] Verify it: `/check verify design system and UI foundation`
+- [x] Verify it: `/check verify design system and UI foundation`
 
 ## Skeleton
 

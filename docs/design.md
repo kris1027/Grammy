@@ -49,9 +49,9 @@ Text colours (`TEXT_COLOR_KEYS`): `ink`, `inkMuted`, `accentText`, `onAccent`, `
 
 ### Sizes
 
-`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 80` (table column minimum before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`.
+`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`.
 
-`minColumn` is 80, not the 96 spec 0003 first wrote: at 96 a 4 column table scrolls sideways on most iPhones even at normal text size. This change is waiting for `/architect` to record it in the spec.
+Table columns are sized by their longest word, not a flat minimum. `columnMinWidths` in `sketch-table.tsx` estimates each word from letter width classes (narrow `0.3`, regular `0.56`, capitals `0.7`, round capitals `0.78`, `m w` `0.86`, `M W` `0.98` em, calibrated against SF Pro semibold and rounded up), adds cell padding and the divider, and never goes below `minColumn × fontScale`. The estimate leans wide on purpose: when unsure, a table scrolls instead of breaking a word. Pass `plain` when the cells are not plain strings.
 
 ### Type scale
 
@@ -81,8 +81,8 @@ One file each, named exports.
 | `SketchCard` | `surface` fill, 2 pt outline, radius `md`, offset shadow. Variant `accent` fills `accentSoft` and only holds `ink`, `inkMuted` or `accentText` text |
 | `SpeechBubble` | Outlined bubble with an orange stripe on the left edge and a small rotated square tail; optional leading icon in `accentText`; `accessibilityText` makes it one screen reader element |
 | `NumberBadge` | Orange circle with an outline and a dark Patrick Hand number |
-| `Chip` | Outlined pill on `surface`, `callout` text |
-| `SketchTable` | Outlined table, header row on `accentSoft`, thin inner lines. When `columns × minColumn × fontScale` is wider than the space, it scrolls sideways and shows `Przesuń w bok, aby zobaczyć więcej →` |
+| `Chip` | Outlined pill on `surface`, `callout` text. Corners use `radius.lg`, not `pill`, so a chip that wraps at large text sizes keeps its text inside the outline |
+| `SketchTable` | Outlined table, header row on `accentSoft`, thin inner lines. Columns are at least as wide as their longest word (see Sizes). When those minimums are wider than the space, it scrolls sideways and shows `Przesuń w bok, aby zobaczyć więcej →` |
 | `Icon` | An SF Symbol (`expo-symbols`), tinted from the theme, decorative unless given a Polish `label` |
 
 The speech bubble stripe has rounded left corners instead of the body clipping it, because clipping would also cut the offset shadow.
@@ -94,9 +94,9 @@ Exported from the lessons door: `BlockView`, `SectionView`, `InlineText`, `plain
 | Block | Look |
 |---|---|
 | `text` | `InlineText` in `body` |
-| `table` | `SketchTable`; caption in `caption`, header in `strong`, cells in `callout` |
+| `table` | `SketchTable`; caption in `caption`, header in `callout` semibold, cells in `callout` |
 | `examples` | Orange dot, English in `strong`, Polish below in `muted`, note in italic `caption` |
-| `tip` | `SpeechBubble` with `lightbulb.fill`, read as `Wskazówka: …` |
+| `tip` | `SpeechBubble` with `lightbulb.fill` labelled `Wskazówka`; the text is not grouped, so VoiceOver reaches each topic link in it |
 | `formula` | Optional label in `caption`, parts as `Chip`s joined by an orange `+`, wrapping; read as `Wzór, <label>: a plus b` |
 | `mistake` | Card with `xmark.circle.fill` and `Błędnie` over the struck through wrong line, `checkmark.circle.fill` and `Poprawnie` over the right line, note below; read as `Błędnie: …` and `Poprawnie: …` |
 | `list` | Orange dot bullet plus `InlineText` |
@@ -114,7 +114,9 @@ Inline markup: `**bold**` is semibold, `==highlight==` keeps the text colour on 
 
 ## Navigation header
 
-`src/app/_layout.tsx` gives the native header the paper background, no shadow line, an ink Patrick Hand title and a burnt orange back button labelled `Wstecz`. If iOS shows its own back label instead, accept it and note it here.
+`src/app/_layout.tsx` gives the native header the paper background, no shadow line, an ink Patrick Hand title and a back button labelled `Wstecz`. It also sets `headerTintColor` to `accentText`. If iOS shows its own back label instead, accept it and note it here.
+
+**Known iOS limit (iOS 26 and later):** the back button sits in a Liquid Glass capsule, and iOS draws its chevron and label in the system vibrant colour (ink in light mode, chalk in dark mode). It ignores the tint. The tint does reach the navigation bar (checked in the running app on iOS 27.2), but the glass button doesn't use it. We keep the native look on purpose. Don't opt out of glass or draw a custom back button just to make it orange. Spec 0003 AC-8 records this.
 
 ## App icon and splash
 
