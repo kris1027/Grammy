@@ -20,7 +20,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
 | 1 | Stack and architecture | Foundation | done |
-| 2 | Coding standards and tooling | Foundation | in-progress |
+| 2 | Coding standards and tooling | Foundation | done |
 | 3 | Lesson content model | Foundation | planned |
 | 4 | Design system and UI foundation | Foundation | planned |
 | 5 | First lesson on your iPhone | Skeleton | planned |
@@ -50,13 +50,13 @@ Settle how the React Native app is set up, then create an empty project that run
 - [x] Verify it: `/check verify stack and architecture`
 - [x] Test it: `/test stack and architecture`
 
-### 2. Coding standards and tooling · in-progress
+### 2. Coding standards and tooling · done
 Write down the project rules and set up automatic code checks, based on the real project.
 **Done when:** root `AGENTS.md` matches the real project, and all code checks run clean.
 **Code:** config in `eslint.config.js`, `.prettierrc.json`, `package.json` (scripts, hook, lint-staged), `.github/workflows/ci.yml`
 - [x] Capture rules and tool choices: `/audit`
 - [x] Install the tooling: `/develop tooling`
-- [ ] Check it runs clean: `/check verify tooling`
+- [x] Check it runs clean: `/check verify tooling`
 
 ### 3. Lesson content model · needs a decision
 Define the shape every lesson follows (headings, explanations in Polish, tables, examples, tips) and how lessons are grouped. It matters because all content depends on it.
