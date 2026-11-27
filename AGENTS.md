@@ -24,6 +24,8 @@ pnpm ios                                             # debug build in the simula
 pnpm expo run:ios --device --configuration Release   # install on the iPhone (free Personal Team)
 pnpm test                                            # Jest
 pnpm typecheck                                       # tsc --noEmit
+pnpm lint                                            # ESLint (expo lint)
+pnpm format                                          # Prettier, fix files (format:check only checks)
 pnpm expo install <name>                             # add a library at the SDK matched version
 ```
 
@@ -47,9 +49,9 @@ Stored in `docs/specs/`, one folder each: `docs/specs/NNNN-title/index.md`. Scop
 ## Tooling
 
 Chosen here, installed by `/develop tooling`:
-- Lint and format: ESLint via `expo lint` (`eslint-config-expo`, flat config) plus Prettier.
-- Before commit: a git hook runs lint and format on staged files, plus `pnpm typecheck`.
-- CI: a GitHub Actions workflow runs lint, typecheck and tests on push and pull requests.
+- Lint and format: ESLint 9 via `expo lint` (`eslint-config-expo`, flat config in `eslint.config.js`) plus Prettier (`.prettierrc.json`; Markdown is skipped). ESLint enforces named exports outside `src/app`. Stay on ESLint 9 until the import and react plugins support 10.
+- Before commit: `simple-git-hooks` plus `lint-staged` lint and format staged files, then run `pnpm typecheck`. `pnpm install` sets up the hook through `prepare`; if the hook goes missing, run `pnpm prepare`.
+- CI: `.github/workflows/ci.yml` runs lint, format check, typecheck and tests on pull requests and pushes to `main`.
 
 ## Git
 
