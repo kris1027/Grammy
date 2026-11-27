@@ -61,7 +61,7 @@ Write down the project rules and set up automatic code checks, based on the real
 ### 3. Lesson content model · in-progress
 Define the shape every lesson follows (headings, explanations in Polish, tables, examples, tips) and how lessons are grouped. It matters because all content depends on it.
 **Done when:** a tense lesson and a different kind of grammar topic both fit the same shape, and adding a lesson needs no screen changes. All content ships inside the app.
-**Spec:** [0002](../specs/0002-lesson-content-model.md)
+**Spec:** [0002](../specs/0002-lesson-content-model/index.md)
 **Code:** code in `src/features/lessons/` (tests in `__tests__/lessons/`)
 - [x] Design it (spec): `/architect lesson content model`
 - [x] Build it: `/develop lesson content model`
