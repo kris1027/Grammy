@@ -53,8 +53,9 @@ Settle how the React Native app is set up, then create an empty project that run
 ### 2. Coding standards and tooling · in-progress
 Write down the project rules and set up automatic code checks, based on the real project.
 **Done when:** root `AGENTS.md` matches the real project, and all code checks run clean.
+**Code:** config in `eslint.config.js`, `.prettierrc.json`, `package.json` (scripts, hook, lint-staged), `.github/workflows/ci.yml`
 - [x] Capture rules and tool choices: `/audit`
-- [ ] Install the tooling: `/develop tooling`
+- [x] Install the tooling: `/develop tooling`
 - [ ] Check it runs clean: `/check verify tooling`
 
 ### 3. Lesson content model · needs a decision
