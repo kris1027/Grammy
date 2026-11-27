@@ -1,7 +1,7 @@
 # 0004. First lesson on your iPhone: one lesson route for every topic
 
 **Date**: 2026-11-27
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

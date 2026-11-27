@@ -23,7 +23,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 2 | Coding standards and tooling | Foundation | done |
 | 3 | Lesson content model | Foundation | done |
 | 4 | Design system and UI foundation | Foundation | done |
-| 5 | First lesson on your iPhone | Skeleton | in-progress |
+| 5 | First lesson on your iPhone | Skeleton | done |
 | 6 | Home and tense map | Slice 1 | planned |
 | 7 | Starter tense lessons | Slice 1 | planned |
 | 8 | Learned marks and resume | Slice 1 | planned |
@@ -86,7 +86,7 @@ Turn your sketch picture into a clean, reusable look: colours, fonts, icons, car
 
 ## Skeleton
 
-### 5. First lesson on your iPhone · Beta · in-progress
+### 5. First lesson on your iPhone · Beta · done
 One complete Present Simple lesson, from stored content to the finished screen. It proves the content shape and design before more lessons are written.
 **Done when:** you can open the app on your iPhone without internet and read the whole Present Simple lesson in Polish, in light and dark, and you have checked that its grammar is correct.
 **Spec:** [0004](../specs/0004-first-lesson-on-iphone/index.md)
