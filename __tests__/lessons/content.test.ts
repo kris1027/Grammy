@@ -50,3 +50,32 @@ test('the two sample lessons use all 7 block types, a link and a related entry (
 test('both sample lessons ship as drafts (covers: AC-7)', () => {
   expect(listDraftLessons().map((t) => t.id)).toEqual(['present-simple', 'articles']);
 });
+
+const PRESENT_SIMPLE_SECTIONS = [
+  'Kiedy używamy',
+  'Budowa',
+  'Pisownia -s / -es / -ies',
+  'Przeczenia',
+  'Pytania i krótkie odpowiedzi',
+  'Słowa sygnałowe',
+  'Typowe błędy',
+  'Present Simple czy Continuous?',
+];
+
+test('Present Simple follows the 8 section template (spec 0004, covers: AC-7)', () => {
+  const found = getLesson('present-simple');
+  if (found.kind !== 'ok') throw new Error('Present Simple is not written');
+
+  expect(found.lesson.sections.map((section) => section.title)).toEqual(PRESENT_SIMPLE_SECTIONS);
+  expect(found.lesson.related).toEqual(['present-continuous', 'past-simple']);
+});
+
+test('Typowe błędy has at least 4 mistakes (spec 0004, covers: AC-7)', () => {
+  const found = getLesson('present-simple');
+  if (found.kind !== 'ok') throw new Error('Present Simple is not written');
+
+  const mistakes = found.lesson.sections
+    .find((section) => section.title === 'Typowe błędy')
+    ?.blocks.filter((block) => block.type === 'mistake');
+  expect(mistakes?.length).toBeGreaterThanOrEqual(4);
+});
