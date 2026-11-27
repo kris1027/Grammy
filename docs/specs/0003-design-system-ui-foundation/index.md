@@ -245,7 +245,7 @@ Tracer Bullet: first one thin thread from token to a real block on the iPhone (f
 - [ ] Feature 5 (first lesson): wire `onOpenTopic` to navigation and decide what a press on an unwritten topic shows.
 - [ ] Feature 6: pick SF Symbols for the 3 time frames and 4 aspects (for example `calendar`, `hourglass`, `airplane`, and `checkmark.square`, `arrow.trianglehead.clockwise`, `puzzlepiece`, `clock`) and add any needed to `docs/design.md`.
 - [ ] Later, if you miss them: a handful of hand drawn SVG icons (needs `react-native-svg`), drawn fresh, never traced.
-- [ ] `/sync`: add a `src/ui/AGENTS.md` (or a root `AGENTS.md` pointer) to `docs/design.md`, and record that Agent Skill discovery for `expo-font` and `expo-symbols` was declined (covered by `expo-native-ui`).
+- [x] `/sync`: add a `src/ui/AGENTS.md` (or a root `AGENTS.md` pointer) to `docs/design.md`, and record that Agent Skill discovery for `expo-font` and `expo-symbols` was declined (covered by `expo-native-ui`).
 
 ## Rationale
 
