@@ -1,7 +1,7 @@
 # 0002. Lesson content model: typed sections of blocks in a bundled catalog
 
 **Date**: 2026-11-27
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 
