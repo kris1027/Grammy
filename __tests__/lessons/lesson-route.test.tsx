@@ -280,7 +280,7 @@ test.each([
   await fireEvent.press(screen.getByRole('link', { name: tileName }));
 
   expect(screen.getByRole('heading', { name: title })).toBeOnTheScreen();
-  expect(screen.getByText(DRAFT_CHIP)).toBeOnTheScreen();
+  expect(screen.queryByText(DRAFT_CHIP)).not.toBeOnTheScreen();
   expect(screen.getAllByTestId('number-badge', { includeHiddenElements: true })).toHaveLength(8);
   expect(screen.getByRole('heading', { name: SEE_ALSO })).toBeOnTheScreen();
 });

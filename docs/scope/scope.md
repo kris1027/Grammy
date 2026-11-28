@@ -25,7 +25,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 4 | Design system and UI foundation | Foundation | done |
 | 5 | First lesson on your iPhone | Skeleton | done |
 | 6 | Home and tense map | Slice 1 | done |
-| 7 | Starter tense lessons | Slice 1 | in-progress |
+| 7 | Starter tense lessons | Slice 1 | done |
 | 8 | Learned marks and resume | Slice 1 | planned |
 | 9 | Remaining tense lessons | Slice 2 | planned |
 | 10 | How to choose a tense | Slice 2 | planned |
@@ -115,13 +115,13 @@ The home screen shows the 12 tenses as 3 time frames by 4 aspects, with a short 
   - [x] Light, dark, large text, VoiceOver and an offline Release run on the iPhone, then your Polish copy check (AC-6, AC-10, AC-11)
 - [x] Verify it: `/check verify home and tense map`
 
-### 7. Starter tense lessons · in-progress
+### 7. Starter tense lessons · done
 Add Present Continuous, Past Simple and Future Simple. With Present Simple, these are the four your picture suggests starting with.
 **Done when:** all three lessons open from the home screen, follow the same layout, and you have checked them.
 **Code:** code in `src/features/lessons/content/lessons/` (`present-continuous.ts`, `past-simple.ts`, `future-simple.ts`; tests in `__tests__/lessons/`) · no own spec, built to the 8 section template of spec [0004](../specs/0004-first-lesson-on-iphone/index.md)
 - [x] Build it: `/develop starter tense lessons`
   - [x] Three lessons in the 8 section template, registered in `lessonsById`, as drafts
-- [ ] Check them: read each lesson on your iPhone with the spec 0004 *Grammar checklist*, fix anything wrong, then set `review: 'checked'` in each file
+- [x] Check them: read each lesson on your iPhone with the spec 0004 *Grammar checklist*, fix anything wrong, then set `review: 'checked'` in each file
 
 ### 8. Learned marks and resume · needs a decision
 Mark lessons as learned and return to where you stopped.

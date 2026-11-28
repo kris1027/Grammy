@@ -1,11 +1,11 @@
 import type { Lesson } from '../../model/types';
 import type { TopicId } from '../catalog';
 
-// A1 to A2 lesson in the 8 section template (spec 0004). AI draft: check the grammar
-// and the Polish, then set review to 'checked'.
+// A1 to A2 lesson in the 8 section template (spec 0004). Checked by you with the
+// spec 0004 Grammar checklist.
 
 export const futureSimple: Lesson<TopicId> = {
-  review: 'draft',
+  review: 'checked',
   related: ['present-continuous', 'future-continuous'],
   sections: [
     {
