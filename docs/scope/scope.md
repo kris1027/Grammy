@@ -113,7 +113,7 @@ The home screen shows the 12 tenses as 3 time frames by 4 aspects, with a short 
   - [x] Full map with icons and the one column switch, the intro bubble, `Inne tematy` and missing data guards (AC-3, AC-4, AC-6, AC-7, AC-9)
   - [x] Remove the sample book and update `docs/design.md` (AC-8)
   - [x] Light, dark, large text, VoiceOver and an offline Release run on the iPhone, then your Polish copy check (AC-6, AC-10, AC-11)
-- [ ] Verify it: `/check verify home and tense map`
+- [x] Verify it: `/check verify home and tense map`
 
 ### 7. Starter tense lessons
 Add Present Continuous, Past Simple and Future Simple. With Present Simple, these are the four your picture suggests starting with.
