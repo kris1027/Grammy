@@ -1,7 +1,14 @@
-import type { Category, Topic } from '../model/types';
+import type { Category, TenseTime, Topic } from '../model/types';
 
 // Order here is the order on screen. Topic ids never change once a lesson ships,
 // because saved progress and routes use them. Summaries are AI drafts, not yet checked.
+
+/** Polish names of the three time frames, in the order of TENSE_TIMES (spec 0005). */
+export const TENSE_TIME_LABELS: Readonly<Record<TenseTime, string>> = {
+  present: 'Teraźniejszość',
+  past: 'Przeszłość',
+  future: 'Przyszłość',
+};
 
 export const categories = [
   { id: 'tenses', title: 'Czasy' },

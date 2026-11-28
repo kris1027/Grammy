@@ -17,6 +17,7 @@ export type {
   TopicStatus,
 } from './model/types';
 export type { TopicId } from './content/catalog';
+export { TENSE_TIME_LABELS } from './content/catalog';
 export { TENSE_ASPECTS, TENSE_TIMES } from './model/types';
 export { parseInline } from './model/markup';
 

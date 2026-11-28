@@ -61,3 +61,13 @@ test('an id that is not in the catalog renders nothing (spec 0004)', async () =>
 
   expect(screen.toJSON()).toBeNull();
 });
+
+test('the tile layout has no chevron and fills its cell (spec 0005, covers: AC-5)', async () => {
+  await render(
+    <TopicCard topicId="present-simple" variant="plain" layout="tile" onPress={jest.fn()} />,
+  );
+
+  const card = screen.getByRole('link', { name: 'Present Simple, czas teraźniejszy prosty' });
+  expect(card).toHaveStyle({ flexGrow: 1 });
+  expect(screen.queryByTestId('icon', { includeHiddenElements: true })).toBeNull();
+});
