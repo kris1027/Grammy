@@ -108,11 +108,11 @@ The home screen shows the 12 tenses as 3 time frames by 4 aspects, with a short 
 **Done when:** all 12 tenses appear in the grid, available lessons open, unwritten ones are clearly marked, and all app text is in Polish.
 **Spec:** [0005](../specs/0005-home-tense-map/index.md) · code in `src/features/home/`
 - [x] Design it (spec): `/architect home and tense map`
-- [ ] Build it: `/develop home and tense map`
+- [x] Build it: `/develop home and tense map`
   - [x] Thin thread: `src/features/home/` with the start card and the present block as 2×2 tiles, `TENSE_TIME_LABELS`, the `tile` layout (AC-1, AC-2, AC-4, AC-5)
   - [x] Full map with icons and the one column switch, the intro bubble, `Inne tematy` and missing data guards (AC-3, AC-4, AC-6, AC-7, AC-9)
   - [x] Remove the sample book and update `docs/design.md` (AC-8)
-  - [ ] Light, dark, large text, VoiceOver and an offline Release run on the iPhone, then your Polish copy check (AC-6, AC-10, AC-11)
+  - [x] Light, dark, large text, VoiceOver and an offline Release run on the iPhone, then your Polish copy check (AC-6, AC-10, AC-11)
 - [ ] Verify it: `/check verify home and tense map`
 
 ### 7. Starter tense lessons
