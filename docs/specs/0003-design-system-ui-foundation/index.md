@@ -243,7 +243,7 @@ Tracer Bullet: first one thin thread from token to a real block on the iPhone (f
 
 - [ ] Feature 6 (home and tense map): delete `/showcase`, `src/features/showcase/` and the `Zobacz wzornik` link once the real home screen exists.
 - [ ] Feature 5 (first lesson): wire `onOpenTopic` to navigation and decide what a press on an unwritten topic shows.
-- [ ] Feature 6: pick SF Symbols for the 3 time frames and 4 aspects (for example `calendar`, `hourglass`, `airplane`, and `checkmark.square`, `arrow.trianglehead.clockwise`, `puzzlepiece`, `clock`) and add any needed to `docs/design.md`.
+- [ ] Feature 6: pick SF Symbols for the 3 time frames and 4 aspects (for example `calendar`, `hourglass`, `airplane`, and `checkmark.square`, `arrow.trianglehead.clockwise`, `puzzlepiece`, `clock`) and add any needed to `docs/design.md`. Decided in spec 0005: time frames only (`smallcircle.filled.circle`, `arrow.left.circle`, `arrow.right.circle`), no aspect icons; `docs/design.md` gets them when feature 6 is built.
 - [ ] Later, if you miss them: a handful of hand drawn SVG icons (needs `react-native-svg`), drawn fresh, never traced.
 - [x] `/sync`: add a `src/ui/AGENTS.md` (or a root `AGENTS.md` pointer) to `docs/design.md`, and record that Agent Skill discovery for `expo-font` and `expo-symbols` was declined (covered by `expo-native-ui`).
 

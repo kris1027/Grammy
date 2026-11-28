@@ -24,7 +24,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 3 | Lesson content model | Foundation | done |
 | 4 | Design system and UI foundation | Foundation | done |
 | 5 | First lesson on your iPhone | Skeleton | done |
-| 6 | Home and tense map | Slice 1 | planned |
+| 6 | Home and tense map | Slice 1 | in-progress |
 | 7 | Starter tense lessons | Slice 1 | planned |
 | 8 | Learned marks and resume | Slice 1 | planned |
 | 9 | Remaining tense lessons | Slice 2 | planned |
@@ -103,10 +103,17 @@ One complete Present Simple lesson, from stored content to the finished screen. 
 
 ## Slice 1: Starter tenses
 
-### 6. Home and tense map · needs a decision
+### 6. Home and tense map · in-progress
 The home screen shows the 12 tenses as 3 time frames by 4 aspects, with a short intro to the system and a clear place to start.
 **Done when:** all 12 tenses appear in the grid, available lessons open, unwritten ones are clearly marked, and all app text is in Polish.
-- [ ] Design it (spec): `/architect home and tense map`
+**Spec:** [0005](../specs/0005-home-tense-map/index.md)
+- [x] Design it (spec): `/architect home and tense map`
+- [ ] Build it: `/develop home and tense map`
+  - [ ] Thin thread: `src/features/home/` with the start card and the present block as 2×2 tiles, `TENSE_TIME_LABELS`, the `tile` layout (AC-1, AC-2, AC-4, AC-5)
+  - [ ] Full map with icons and the one column switch, the intro bubble, `Inne tematy` and missing data guards (AC-3, AC-4, AC-6, AC-7, AC-9)
+  - [ ] Remove the sample book and update `docs/design.md` (AC-8)
+  - [ ] Light, dark, large text, VoiceOver and an offline Release run on the iPhone, then your Polish copy check (AC-6, AC-10, AC-11)
+- [ ] Verify it: `/check verify home and tense map`
 
 ### 7. Starter tense lessons
 Add Present Continuous, Past Simple and Future Simple. With Present Simple, these are the four your picture suggests starting with.
