@@ -78,5 +78,6 @@ Declined: `expo-font`, `expo-symbols` Agent Skills (covered by `expo-native-ui`)
 - Design system: build all UI to [docs/design.md](docs/design.md) (paper and chalkboard look, shared parts, rules); token values live in `src/ui/theme.ts`.
 <!-- Nested AGENTS.md files are listed here as they are created -->
 - [src/features/lessons/AGENTS.md](src/features/lessons/AGENTS.md): lesson content model, catalog, how to add a lesson or topic
+- [src/features/home/AGENTS.md](src/features/home/AGENTS.md): the home screen, start card, tense map and `Inne tematy`, where its Polish copy lives
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

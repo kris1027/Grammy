@@ -5,7 +5,7 @@ import { Text, useColorScheme } from 'react-native';
 
 import RootLayout from '@/app/_layout';
 import HomeScreen from '@/app/index';
-import ShowcaseRoute from '@/app/showcase';
+import LessonRoute from '@/app/lesson/[id]';
 import { themes } from '@/ui/theme';
 
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
@@ -30,14 +30,14 @@ afterEach(() => {
 });
 
 test('opens on the home screen', async () => {
-  await renderRouter({ _layout: RootLayout, index: HomeScreen, showcase: ShowcaseRoute });
+  await renderRouter({ _layout: RootLayout, index: HomeScreen });
 
   expect(screen).toHavePathname('/');
   expect(screen.getByRole('heading', { name: 'Gramatyka angielska' })).toBeOnTheScreen();
 });
 
 test('hides the navigation header above the home screen', async () => {
-  await renderRouter({ _layout: RootLayout, index: HomeScreen, showcase: ShowcaseRoute });
+  await renderRouter({ _layout: RootLayout, index: HomeScreen });
 
   // The iPhone draws the header itself, so there is no header text to query.
   // This reads the setting handed to the native view (a react-native-screens
@@ -56,25 +56,24 @@ test.each([
   async (mode, expected) => {
     mockColorScheme.mockReturnValue(mode);
 
-    await renderRouter({ _layout: RootLayout, index: ThemeProbe, showcase: ShowcaseRoute });
+    await renderRouter({ _layout: RootLayout, index: ThemeProbe });
 
     expect(screen.getByText(expected)).toBeOnTheScreen();
   },
 );
 
-test('the home link opens the sample book under a themed header (covers: AC-8)', async () => {
-  await renderRouter({ _layout: RootLayout, index: HomeScreen, showcase: ShowcaseRoute });
+test('a lesson opened from home sits under a themed header (covers: AC-8)', async () => {
+  await renderRouter({ _layout: RootLayout, index: HomeScreen, 'lesson/[id]': LessonRoute });
 
-  await fireEvent.press(screen.getByRole('link', { name: 'Zobacz wzornik' }));
+  await fireEvent.press(screen.getByRole('link', { name: 'Otwórz lekcję: Present Simple' }));
 
-  expect(screen).toHavePathname('/showcase');
-  expect(screen.getByRole('heading', { name: 'Kolory' })).toBeOnTheScreen();
+  expect(screen).toHavePathname('/lesson/present-simple');
 
   const header = screen.container
     .queryAll((node) => node.type === 'RNSScreenStackHeaderConfig')
     .find((node) => node.props.hidden !== true);
   expect(header?.props).toMatchObject({
-    title: 'Wzornik',
+    title: '',
     backTitle: 'Wstecz',
     backgroundColor: themes.light.colors.paper,
     color: themes.light.colors.accentText,

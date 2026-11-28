@@ -62,6 +62,8 @@ export const sizes = {
   maxGraphicScale: 2,
   /** Minimum height of anything you can press (Apple's 44 point touch target). */
   minTouch: 44,
+  /** At or above this text size the tense map shows one tile per row instead of two. */
+  gridMaxFontScale: 1.2,
 } as const;
 
 /** Points before Dynamic Type. Patrick Hand has one weight, so its styles set no fontWeight. */

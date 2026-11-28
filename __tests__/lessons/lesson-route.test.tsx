@@ -5,7 +5,6 @@ import { useColorScheme } from 'react-native';
 import RootLayout from '@/app/_layout';
 import HomeScreen from '@/app/index';
 import LessonRoute from '@/app/lesson/[id]';
-import ShowcaseRoute from '@/app/showcase';
 import { getLesson } from '@/features/lessons';
 import {
   BACK_HOME,
@@ -47,7 +46,6 @@ const SECTION_LABELS = [
 const routes = {
   _layout: RootLayout,
   index: HomeScreen,
-  showcase: ShowcaseRoute,
   'lesson/[id]': LessonRoute,
 };
 

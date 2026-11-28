@@ -12,7 +12,7 @@ The look is our own. Nothing is copied or traced from the sketch picture: no reu
 
 - Every screen assembles the shared parts in `src/ui` and the lesson views in `src/features/lessons`. A screen never invents a colour, font size, spacing or fixed size.
 - Styles use `StyleSheet.create` with theme values. For colours that change with light and dark, build styles with `createThemedStyles((theme) => StyleSheet.create({...}))` at module level and pick them with `useThemedStyles(themed)` inside the component. For a one off value, `useTheme()` returns the whole theme.
-- Both schemes are first class. Check every new part in light and dark on the iPhone (the `Wzornik` screen is the place for it until feature 6 removes it).
+- Both schemes are first class. Check every new part in light and dark on the iPhone, on the real screens that use it.
 - All visible text and accessibility labels are Polish.
 
 ## Tokens
@@ -49,7 +49,7 @@ Text colours (`TEXT_COLOR_KEYS`): `ink`, `inkMuted`, `accentText`, `onAccent`, `
 
 ### Sizes
 
-`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`, `minTouch 44` (minimum height of anything you can press; a standalone text link gets it from `TextLink`).
+`badge 32` (number circle), `dot 8` (bullet), `stripe 4` (bubble stripe), `tail 14` (bubble tail square), `tailInset 20` (tail distance from the bubble's left edge), `minColumn 64` (table column floor before font scale), `icon 20`, `maxHeadingScale 1.5`, `maxGraphicScale 2`, `minTouch 44` (minimum height of anything you can press; a standalone text link gets it from `TextLink`), `gridMaxFontScale 1.2` (at or above this text size the tense map shows one tile per row; lower it if a tile word breaks on the device).
 
 Table columns are sized by their longest word, not a flat minimum. `columnMinWidths` in `sketch-table.tsx` estimates each word from letter width classes (narrow `0.3`, regular `0.56`, capitals `0.7`, round capitals `0.78`, `m w` `0.86`, `M W` `0.98` em, calibrated against SF Pro semibold and rounded up), adds cell padding and the divider, and never goes below `minColumn × fontScale`. The estimate leans wide on purpose: when unsure, a table scrolls instead of breaking a word. Pass `plain` when the cells are not plain strings.
 
@@ -78,7 +78,7 @@ One file each, named exports.
 | `Screen` | Safe area root on `paper`, `lg` side padding, `xl` bottom padding, scrolls by default. Under a native header pass `edges={['left', 'right', 'bottom']}`. `onScroll` and `scrollEventThrottle` (default 16) go straight to the `ScrollView` |
 | `Heading` | Patrick Hand, levels 1 to 3, `role="heading"`, capped at 1.5 times. Optional `tone` (a text colour key) and `accessibilityLabel` |
 | `AppText` | System font text. Variants `body`, `muted`, `caption`, `strong`, `callout`; `italic`; `tone` picks one of the text colour keys |
-| `SketchCard` | `surface` fill, 2 pt outline, radius `md`, offset shadow. Variant `accent` fills `accentSoft` and only holds `ink`, `inkMuted` or `accentText` text |
+| `SketchCard` | `surface` fill, 2 pt outline, radius `md`, offset shadow. Variant `accent` fills `accentSoft` and only holds `ink`, `inkMuted` or `accentText` text. `fill` grows the card to fill its parent, so cards side by side match heights |
 | `SpeechBubble` | Outlined bubble with an orange stripe on the left edge and a small rotated square tail; optional leading icon in `accentText`; `accessibilityText` makes it one screen reader element |
 | `NumberBadge` | Orange circle with an outline and a dark Patrick Hand number |
 | `Chip` | Outlined pill on `surface`, `callout` text. Corners use `radius.lg`, not `pill`, so a chip that wraps at large text sizes keeps its text inside the outline |
@@ -106,7 +106,9 @@ English voice: `InlineText` takes `language="en"`, which sets `accessibilityLang
 
 Numbered section: `SectionView` with `number` puts a `NumberBadge` (hidden from VoiceOver) before the level 2 heading in a row (`md` gap, the title wraps), and the heading reads as `<number>. <title>`. Numbers come from the section's position.
 
-`TopicCard`: a `Pressable` around a `SketchCard` (`accent` or `plain`), with a Heading level 3 title, the subtitle in `muted`, an optional `summary` in `body`, and a `chevron.right` in `accentText`. An unwritten topic shows its title and chevron in `inkMuted` and a `caption` line `Lekcja jeszcze niegotowa`. One element, `role="link"`, labelled `<title>, <subtitle>` (plus `, lekcja jeszcze niegotowa`). Pressed lowers opacity to 0.6. An id not in the catalog renders nothing.
+`TopicCard`: a `Pressable` around a `SketchCard` (`accent` or `plain`), with a Heading level 3 title, the subtitle in `muted`, an optional `summary` in `body`, and a `chevron.right` in `accentText`. An unwritten topic shows its title and chevron in `inkMuted` and a `caption` line `Lekcja jeszcze niegotowa`. One element, `role="link"`, labelled `<title>, <subtitle>` (plus `, lekcja jeszcze niegotowa`). Pressed lowers opacity to 0.6. An id not in the catalog renders nothing. `layout="tile"` (spec 0005) drops the chevron and fills its cell's height (the `Pressable` and the `SketchCard` both grow), for grids where two tiles share a row; the default `row` layout keeps the chevron.
+
+Home screen (`/`, spec 0005, `src/features/home`): no native header. Top to bottom, `xl` apart: Heading level 1 `Gramatyka angielska`; `Zacznij tutaj` (level 2) over an `accent` `TopicCard` with its summary; a `SpeechBubble` with the decorative `map` icon holding the intro, read as one element; `Mapa czasów` (level 2) and three time frame blocks; then `Inne tematy` (level 2) with a level 3 heading per non tense category and plain `TopicCard`s. Each time frame block is a row of a decorative icon in `accentText` (present `smallcircle.filled.circle`, past `arrow.left.circle`, future `arrow.right.circle`, `sm` gap, the label wraps) and a level 3 heading, then its four tenses as `tile` cards in two rows of two (`Simple | Continuous`, `Perfect | Perfect Continuous`, `md` apart both ways). At `gridMaxFontScale` and above each tile gets its own row. Inside the map: heading to first block `lg`, blocks `xl` apart, block heading to tiles `md`.
 
 Lesson page (`/lesson/[id]`, spec 0004): Heading level 1, subtitle in `muted` and the `Wersja robocza` chip while draft (`sm` apart, the chip hugs its text), the summary in an `accent` card, the numbered sections (`xxl` apart), then `Zobacz też` with plain `TopicCard`s (`md` apart). Page blocks are `xl` apart. The header title stays empty until the top heading scrolls under the header. A not written topic shows the top, the summary and `Ta lekcja jeszcze nie powstała.` in `muted`; an unknown id shows `Nie znaleziono lekcji` and a `Wróć do strony głównej` link.
 
