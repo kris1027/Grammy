@@ -101,12 +101,12 @@ test('shows the whole lesson in order, with numbered sections (covers: AC-2, AC-
   expect(screen.getByRole('heading', { name: SEE_ALSO })).toBeOnTheScreen();
   expect(
     screen.getByRole('link', {
-      name: 'Present Continuous, czas teraźniejszy ciągły, lekcja jeszcze niegotowa',
+      name: 'Present Continuous, czas teraźniejszy ciągły',
     }),
   ).toBeOnTheScreen();
   expect(
     screen.getByRole('link', {
-      name: 'Past Simple, czas przeszły prosty, lekcja jeszcze niegotowa',
+      name: 'Past Simple, czas przeszły prosty',
     }),
   ).toBeOnTheScreen();
 });
@@ -144,21 +144,21 @@ test('the header title follows the scroll position (covers: AC-3)', async () => 
 });
 
 test('a Zobacz też card to an unwritten topic is muted, labelled and opens its page (covers: AC-4, AC-5)', async () => {
-  await open('/lesson/present-simple');
+  await open('/lesson/past-simple');
 
   const card = screen.getByRole('link', {
-    name: 'Past Simple, czas przeszły prosty, lekcja jeszcze niegotowa',
+    name: 'Past Continuous, czas przeszły ciągły, lekcja jeszcze niegotowa',
   });
-  // One caption per unwritten card (Present Continuous and Past Simple).
+  // One caption per unwritten card (Present Perfect and Past Continuous).
   expect(screen.getAllByText('Lekcja jeszcze niegotowa')).toHaveLength(2);
-  expect(screen.getByRole('heading', { name: 'Past Simple' })).toHaveStyle({
+  expect(screen.getByRole('heading', { name: 'Past Continuous' })).toHaveStyle({
     color: themes.light.colors.inkMuted,
   });
 
   await fireEvent.press(card);
 
-  expect(screen).toHavePathname('/lesson/past-simple');
-  expect(screen.getByRole('heading', { name: 'Past Simple' })).toBeOnTheScreen();
+  expect(screen).toHavePathname('/lesson/past-continuous');
+  expect(screen.getByRole('heading', { name: 'Past Continuous' })).toBeOnTheScreen();
   expect(screen.getByText(NOT_WRITTEN_TEXT)).toBeOnTheScreen();
 });
 
@@ -193,9 +193,9 @@ test('a link to the lesson you are on does nothing (covers: AC-4)', async () => 
 });
 
 test('a not written topic has no chip, sections or Zobacz też (covers: AC-5)', async () => {
-  await open('/lesson/past-simple');
+  await open('/lesson/past-continuous');
 
-  expect(screen.getByText('czas przeszły prosty')).toBeOnTheScreen();
+  expect(screen.getByText('czas przeszły ciągły')).toBeOnTheScreen();
   expect(screen.getByText(NOT_WRITTEN_TEXT)).toHaveStyle({
     color: themes.light.colors.inkMuted,
   });
@@ -234,9 +234,9 @@ test('a draft lesson shows the draft chip (covers: AC-2, AC-12)', async () => {
 });
 
 test('the summary card shows and Zobacz też follows the related order (covers: AC-2)', async () => {
-  const found = realGetLesson('present-simple');
-  if (found.kind !== 'ok') throw new Error('Present Simple should be written');
-  await open('/lesson/present-simple');
+  const found = realGetLesson('past-simple');
+  if (found.kind !== 'ok') throw new Error('Past Simple should be written');
+  await open('/lesson/past-simple');
 
   expect(screen.getByText(found.topic.summary)).toBeOnTheScreen();
   const cardTitles = screen
@@ -244,11 +244,11 @@ test('the summary card shows and Zobacz też follows the related order (covers: 
     .map((node) => node.props.accessibilityLabel as string | undefined)
     .filter((label) => label?.endsWith('lekcja jeszcze niegotowa'))
     .map((label) => label?.split(',')[0]);
-  expect(cardTitles).toEqual(['Present Continuous', 'Past Simple']);
+  expect(cardTitles).toEqual(['Present Perfect', 'Past Continuous']);
 });
 
 test('a not written page shows its title in the header once you scroll past it (covers: AC-3, AC-5)', async () => {
-  await open('/lesson/past-simple');
+  await open('/lesson/past-continuous');
   await fireEvent(screen.getByTestId('page-top'), 'layout', {
     nativeEvent: { layout: { x: 0, y: 16, width: 360, height: 100 } },
   });
@@ -257,7 +257,7 @@ test('a not written page shows its title in the header once you scroll past it (
   expect(topHeader()?.props.title).toBe('');
 
   await fireEvent.scroll(scrollView(), { nativeEvent: { contentOffset: { x: 0, y: 116 } } });
-  expect(topHeader()?.props.title).toBe('Past Simple');
+  expect(topHeader()?.props.title).toBe('Past Continuous');
 
   await fireEvent.scroll(scrollView(), { nativeEvent: { contentOffset: { x: 0, y: 0 } } });
   expect(topHeader()?.props.title).toBe('');
@@ -269,4 +269,18 @@ test('the way home on the not found page is tall enough to press (covers: AC-10)
   expect(screen.getByRole('link', { name: BACK_HOME })).toHaveStyle({
     minHeight: sizes.minTouch,
   });
+});
+
+test.each([
+  ['Present Continuous, czas teraźniejszy ciągły', 'Present Continuous'],
+  ['Past Simple, czas przeszły prosty', 'Past Simple'],
+  ['Future Simple, czas przyszły prosty', 'Future Simple'],
+])('the %s tile on home opens its full lesson (feature 7)', async (tileName, title) => {
+  await open('/');
+  await fireEvent.press(screen.getByRole('link', { name: tileName }));
+
+  expect(screen.getByRole('heading', { name: title })).toBeOnTheScreen();
+  expect(screen.getByText(DRAFT_CHIP)).toBeOnTheScreen();
+  expect(screen.getAllByTestId('number-badge', { includeHiddenElements: true })).toHaveLength(8);
+  expect(screen.getByRole('heading', { name: SEE_ALSO })).toBeOnTheScreen();
 });

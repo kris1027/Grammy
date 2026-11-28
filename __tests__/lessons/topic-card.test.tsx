@@ -42,15 +42,15 @@ test('the summary shows only when asked (spec 0004, covers: AC-1)', async () => 
 });
 
 test('an unwritten topic is muted and says so in words (spec 0004, covers: AC-5)', async () => {
-  await render(<TopicCard topicId="past-simple" variant="plain" onPress={jest.fn()} />);
+  await render(<TopicCard topicId="past-continuous" variant="plain" onPress={jest.fn()} />);
 
   expect(
     screen.getByRole('link', {
-      name: 'Past Simple, czas przeszły prosty, lekcja jeszcze niegotowa',
+      name: 'Past Continuous, czas przeszły ciągły, lekcja jeszcze niegotowa',
     }),
   ).toBeOnTheScreen();
   expect(screen.getByText('Lekcja jeszcze niegotowa')).toBeOnTheScreen();
-  expect(screen.getByText('Past Simple')).toHaveStyle({ color: colors.inkMuted });
+  expect(screen.getByText('Past Continuous')).toHaveStyle({ color: colors.inkMuted });
   expect(screen.getByTestId('icon', { includeHiddenElements: true }).props.tintColor).toBe(
     colors.inkMuted,
   );

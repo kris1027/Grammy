@@ -62,7 +62,8 @@ describe('real catalog', () => {
   test('marks written and unwritten topics (covers: AC-2)', () => {
     const grid = getTenseGrid();
     expect(grid.present.simple?.isWritten).toBe(true);
-    expect(grid.past.simple?.isWritten).toBe(false);
+    expect(grid.past.simple?.isWritten).toBe(true);
+    expect(grid.past.continuous?.isWritten).toBe(false);
   });
 });
 
