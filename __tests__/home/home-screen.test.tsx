@@ -146,7 +146,7 @@ test('a tile fills its cell and opens its lesson (covers: AC-5)', async () => {
   await render(<HomeScreen />);
 
   const tile = screen.getByRole('link', {
-    name: 'Past Simple, czas przeszły prosty, lekcja jeszcze niegotowa',
+    name: 'Past Simple, czas przeszły prosty',
   });
   expect(tile).toHaveStyle({ flexGrow: 1 });
 
@@ -161,17 +161,17 @@ test('an unwritten tile is muted, captioned, labelled and still opens (covers: A
   await render(<HomeScreen />);
 
   const tile = screen.getByRole('link', {
-    name: 'Present Continuous, czas teraźniejszy ciągły, lekcja jeszcze niegotowa',
+    name: 'Present Perfect, czas teraźniejszy dokonany, lekcja jeszcze niegotowa',
   });
   expect(within(tile).getByText('Lekcja jeszcze niegotowa')).toBeTruthy();
-  expect(within(tile).getByText('Present Continuous')).toHaveStyle({
+  expect(within(tile).getByText('Present Perfect')).toHaveStyle({
     color: themes.light.colors.inkMuted,
   });
 
   await fireEvent.press(tile);
   expect(mockPush).toHaveBeenCalledWith({
     pathname: '/lesson/[id]',
-    params: { id: 'present-continuous' },
+    params: { id: 'present-perfect' },
   });
 });
 

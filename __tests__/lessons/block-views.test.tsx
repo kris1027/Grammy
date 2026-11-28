@@ -37,13 +37,13 @@ describe('InlineText (covers: AC-6)', () => {
   test('a link to an unwritten topic is muted but still a pressable link', async () => {
     const onOpenTopic = jest.fn();
     await render(
-      <InlineText text="Użyj [[present-continuous|tego czasu]]." onOpenTopic={onOpenTopic} />,
+      <InlineText text="Użyj [[present-perfect|tego czasu]]." onOpenTopic={onOpenTopic} />,
     );
 
     const link = screen.getByRole('link', { name: 'tego czasu' });
     expect(link).toHaveStyle({ color: colors.inkMuted, textDecorationLine: 'underline' });
     await fireEvent.press(link);
-    expect(onOpenTopic).toHaveBeenCalledWith('present-continuous');
+    expect(onOpenTopic).toHaveBeenCalledWith('present-perfect');
   });
 
   test('without onOpenTopic a link is styled but not pressable', async () => {

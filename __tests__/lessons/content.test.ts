@@ -47,7 +47,7 @@ test('the two sample lessons use all 7 block types, a link and a related entry (
   expect(samples.some(([, lesson]) => (lesson.related ?? []).length > 0)).toBe(true);
 });
 
-test('Present Simple is checked and only Articles is still a draft (covers: AC-12)', () => {
+test('the four tense lessons are checked; only Articles is a draft (covers: AC-12)', () => {
   expect(listDraftLessons().map((t) => t.id)).toEqual(['articles']);
 });
 
@@ -78,4 +78,57 @@ test('Typowe błędy has at least 4 mistakes (spec 0004, covers: AC-7)', () => {
     .find((section) => section.title === 'Typowe błędy')
     ?.blocks.filter((block) => block.type === 'mistake');
   expect(mistakes?.length).toBeGreaterThanOrEqual(4);
+});
+
+// Feature 7: the starter tense lessons follow the same 8 section template (spec 0004).
+const STARTER_LESSONS = [
+  {
+    id: 'present-continuous',
+    third: 'Pisownia -ing',
+    last: 'Present Continuous czy Simple?',
+    related: ['present-simple', 'past-continuous'],
+  },
+  {
+    id: 'past-simple',
+    third: 'Pisownia -ed i formy nieregularne',
+    last: 'Past Simple czy Present Perfect?',
+    related: ['present-perfect', 'past-continuous'],
+  },
+  {
+    id: 'future-simple',
+    third: "Formy skrócone 'll i won't",
+    last: 'Future Simple czy going to?',
+    related: ['present-continuous', 'future-continuous'],
+  },
+] as const;
+
+describe.each(STARTER_LESSONS)('starter lesson $id', ({ id, third, last, related }) => {
+  const found = getLesson(id);
+  if (found.kind !== 'ok') throw new Error(`${id} is not written`);
+  const { lesson } = found;
+
+  test('follows the 8 section template in order', () => {
+    expect(lesson.sections.map((section) => section.title)).toEqual([
+      'Kiedy używamy',
+      'Budowa',
+      third,
+      'Przeczenia',
+      'Pytania i krótkie odpowiedzi',
+      'Słowa sygnałowe',
+      'Typowe błędy',
+      last,
+    ]);
+    expect(lesson.related).toEqual(related);
+  });
+
+  test('Typowe błędy has at least 4 mistakes', () => {
+    const mistakes = lesson.sections
+      .find((section) => section.title === 'Typowe błędy')
+      ?.blocks.filter((block) => block.type === 'mistake');
+    expect(mistakes?.length).toBeGreaterThanOrEqual(4);
+  });
+
+  test('is checked', () => {
+    expect(lesson.review).toBe('checked');
+  });
 });
