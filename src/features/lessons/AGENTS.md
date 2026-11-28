@@ -4,7 +4,7 @@ The lesson content model: the shape every lesson follows, the catalog of categor
 
 ## Layout
 
-- `index.ts`: the only door. Other features import from here, never from `content/` or `model/`. It exports the types, `TopicId`, `TENSE_TIMES`, `TENSE_ASPECTS`, the bound queries (`listCategories`, `listTopics`, `getTopic`, `getLesson`, `getTenseGrid`, `listDraftLessons`) and `parseInline`, plus the views `BlockView`, `SectionView`, `InlineText` and `plainText` (spec 0003) and `TopicCard` (spec 0004). `validateContent`, `findMarkupProblems`, `createQueries` and the raw content stay internal.
+- `index.ts`: the only door. Other features import from here, never from `content/` or `model/`. It exports the types, `TopicId`, `TENSE_TIMES`, `TENSE_ASPECTS`, `TENSE_TIME_LABELS` (Polish time frame names, spec 0005), the bound queries (`listCategories`, `listTopics`, `getTopic`, `getLesson`, `getTenseGrid`, `listDraftLessons`) and `parseInline`, plus the views `BlockView`, `SectionView`, `InlineText` and `plainText` (spec 0003) and `TopicCard` (spec 0004; `layout="tile"` is the tense map tile, spec 0005). `validateContent`, `findMarkupProblems`, `createQueries` and the raw content stay internal.
 - `model/`: generic, content agnostic code (types, queries, markup parser, validator, `collectStrings`). Ids are plain `string` here.
 - `content/catalog.ts`: categories and topics, in screen order. `TopicId` comes from here.
 - `content/lessons/`: one file per written lesson, plus `index.ts` mapping topic id to lesson (`lessonsById`).

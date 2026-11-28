@@ -1,7 +1,7 @@
 # 0005. Home and tense map: three time frame blocks of 2×2 tiles
 
 **Date**: 2026-11-27
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

@@ -24,7 +24,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 3 | Lesson content model | Foundation | done |
 | 4 | Design system and UI foundation | Foundation | done |
 | 5 | First lesson on your iPhone | Skeleton | done |
-| 6 | Home and tense map | Slice 1 | in-progress |
+| 6 | Home and tense map | Slice 1 | done |
 | 7 | Starter tense lessons | Slice 1 | planned |
 | 8 | Learned marks and resume | Slice 1 | planned |
 | 9 | Remaining tense lessons | Slice 2 | planned |
@@ -103,7 +103,7 @@ One complete Present Simple lesson, from stored content to the finished screen. 
 
 ## Slice 1: Starter tenses
 
-### 6. Home and tense map · in-progress
+### 6. Home and tense map · done
 The home screen shows the 12 tenses as 3 time frames by 4 aspects, with a short intro to the system and a clear place to start.
 **Done when:** all 12 tenses appear in the grid, available lessons open, unwritten ones are clearly marked, and all app text is in Polish.
 **Spec:** [0005](../specs/0005-home-tense-map/index.md) · code in `src/features/home/`
